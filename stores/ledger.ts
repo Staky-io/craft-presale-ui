@@ -6,8 +6,8 @@ import Icx from '@/assets/scripts/hw-app-icx/Icx'
 
 import { useUserStore } from '@/stores/user'
 
-const config = useRuntimeConfig()
-const url = config.iconNetwork === 'testnet' ? 'https://sejong.net.solidwallet.io/' : 'https://ctz.solidwallet.io/'
+const { iconNetwork } = useRuntimeConfig()
+const url = iconNetwork === 'testnet' ? 'https://sejong.net.solidwallet.io/' : 'https://ctz.solidwallet.io/'
 const provider = new IconService.HttpProvider(`${url}api/v3`)
 const iconService = new IconService(provider)
 
@@ -75,7 +75,7 @@ export const useLedgerStore = defineStore('ledger-store', () => {
       addressPath.value = path
       loginUser({ address, wallet: 'ledger' })
       emit(events.POPUP_CLOSE, { handlePending: true })
-      notify.error({
+      notify.success({
         title: 'Log in successful',
         timeout: 5000,
       })

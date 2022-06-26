@@ -36,7 +36,7 @@ type CancelParams = {
 }
 
 type RpcParams = {
-  payload: Record<string, unknown | never>
+  payload?: string
   error?: string
 }
 
@@ -160,7 +160,7 @@ export const useIconexListener = () => {
     } else if (payload.address) {
       loginUser({ address: payload.address, wallet: 'iconex' })
       emit(events.POPUP_CLOSE, { handlePending: true })
-      notify.error({
+      notify.success({
         title: 'Log in successful',
         timeout: 5000,
       })
