@@ -110,6 +110,8 @@ import { storeToRefs } from 'pinia'
 import { useDeviceStore } from '@/stores/device'
 import { useLedgerStore } from '@/stores/ledger'
 
+const { name } = useRuntimeConfig()
+
 const isNonDesktopWarned = useState<boolean>('isNonDesktopWarned', () => false)
 
 const ledgerStore = useLedgerStore()
@@ -211,8 +213,8 @@ onMounted(async () => {
     isNonDesktopWarned.value = true
 
     notify.info({
-      title: 'Claws on mobile',
-      message: 'To use Claws on Mobile, you have to download the MyICONWallet app and browse to this url with it.',
+      title: `${name} on mobile`,
+      message: `To use ${name} on Mobile, you have to download the MyICONWallet app and browse to this url with it.`,
       timeout: 10000,
     })
   }

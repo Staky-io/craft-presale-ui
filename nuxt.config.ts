@@ -3,12 +3,15 @@ import inject from '@rollup/plugin-inject'
 
 export default defineNuxtConfig({
   publicRuntimeConfig: {
-    iconNetwork: process.env.ICON_NETWORK,
+    name: process.env.APP_NAME,
+    collection: process.env.APP_COLLECTION,
+    iconNetwork: process.env.APP_ICON_NETWORK,
+    scoreAddress: process.env.APP_SCORE_ADDRESS,
   },
   app: {
     head: {
-      title: 'Staky starter',
-      titleTemplate: '%s - Staky starter',
+      title: process.env.APP_NAME,
+      titleTemplate: `%s - ${process.env.APP_NAME}`,
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       ],

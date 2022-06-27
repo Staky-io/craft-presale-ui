@@ -3,8 +3,9 @@
     v-if="notificationsBanner"
     v-bind="notificationsBanner"
   />
-  <PartialsNavigationHeader />
-  <NuxtPage />
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
   <transition name="fade">
     <UtilsOverlay v-if="!!currentPopup.component" />
   </transition>

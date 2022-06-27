@@ -9,6 +9,7 @@ const icons = {
   Logout: markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Logout.vue'))),
   'Logo/Discord': markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Logo/Discord.vue'))),
   'Logo/Github': markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Logo/Github.vue'))),
+  'Logo/Icon': markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Logo/Icon.vue'))),
   'Logo/Twitter': markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Logo/Twitter.vue'))),
   'Math/Minus': markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Math/Minus.vue'))),
   'Math/Plus': markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Math/Plus.vue'))),
