@@ -1,7 +1,7 @@
 import IconService from 'icon-sdk-js'
 
 export const useScoreService = () => {
-  const { iconNetwork, scoreAddress: _adr } = useRuntimeConfig()
+  const { iconNetwork, scoreAddress } = useRuntimeConfig()
 
   const isTestnet: boolean = iconNetwork === 'testnet'
   const url: string = isTestnet
@@ -13,7 +13,7 @@ export const useScoreService = () => {
   const SCORECallReadOnly = async (_method: string, _params?: unknown): Promise<string> => {
     try {
       const txObj = new IconService.IconBuilder.CallBuilder()
-        .to(_adr)
+        .to(scoreAddress)
         .method(_method)
       const call = _params ? txObj.params(_params) : txObj
 

@@ -3,10 +3,10 @@ import inject from '@rollup/plugin-inject'
 
 export default defineNuxtConfig({
   publicRuntimeConfig: {
-    name: process.env.APP_NAME,
     collection: process.env.APP_COLLECTION,
     iconNetwork: process.env.APP_ICON_NETWORK,
     scoreAddress: process.env.APP_SCORE_ADDRESS,
+    status: process.env.APP_STATUS,
   },
   app: {
     head: {

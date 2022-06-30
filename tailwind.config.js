@@ -24,74 +24,27 @@ module.exports = {
       inherit: 'inherit',
 
       black: '#111111',
-      white: '#F8FAFC',
+      white: '#FFFFFF',
 
       primary: color,
 
       grey: {
-        '000': '#F8FAFC',
-        100: '#F1F5F9',
-        200: '#E2E8F0',
-        300: '#CBD5E1',
-        400: '#94A3B8',
-        500: '#64748B',
-        600: '#475569',
-        700: '#334155',
-        800: '#1E293B',
-        900: '#0F172A',
+        '000': '#F9FAFB',
+        100: '#F3F4F6',
+        200: '#E5E7EB',
+        300: '#D2D5DA',
+        400: '#9CA3AF',
+        500: '#6D7280',
+        600: '#4B5563',
+        700: '#374151',
+        800: '#1F2937',
+        900: '#111827',
       },
 
-      success: {
-        default: '#2CC62C',
-        100: '#29B42C',
-        200: '#26A32C',
-        300: '#23912B',
-        400: '#20802B',
-        500: '#1E6F2B',
-        600: '#1B5D2B',
-        700: '#184C2B',
-        800: '#153A2A',
-        900: '#12282A',
-      },
-
-      warning: {
-        default: '#FFBC22',
-        100: '#E7AB23',
-        200: '#CF9B24',
-        300: '#B78A24',
-        400: '#9F7A25',
-        500: '#876A26',
-        600: '#6F5927',
-        700: '#574928',
-        800: '#3F3828',
-        900: '#272829',
-      },
-
-      error: {
-        default: '#E52121',
-        100: '#CF2022',
-        200: '#BA1F23',
-        300: '#A41E23',
-        400: '#8F1D24',
-        500: '#7A1C25',
-        600: '#641B26',
-        700: '#4F1A27',
-        800: '#3A1928',
-        900: '#241829',
-      },
-
-      info: {
-        default: '#42B1FF',
-        100: '#3DA1EA',
-        200: '#3892D4',
-        300: '#3383BF',
-        400: '#2E73AA',
-        500: '#286495',
-        600: '#23557F',
-        700: '#1E456A',
-        800: '#193655',
-        900: '#14263F',
-      },
+      success: '#22C55E',
+      warning: '#EAB308',
+      error: '#EF4444',
+      info: '#3B82F6',
     },
     // Tailwind Utility : p-, m- etc.
     spacing: {
@@ -499,6 +452,61 @@ module.exports = {
         '.max-h-screen': { 'max-height': '100vh' },
         '.max-w-screen': { 'max-width': '100vw' },
       }, ['responsive'])
+
+      addUtilities({
+        '.typo-h1': {
+          'font-weight': '700',
+          'font-size': '30px',
+          'line-height': '36px',
+        },
+        '.typo-h2': {
+          'font-weight': '600',
+          'font-size': '16px',
+          'line-height': '19px',
+        },
+        '.typo-section': {
+          'font-weight': '400',
+          'font-size': '14px',
+          'line-height': '22px',
+        },
+        '.typo-body': {
+          'font-weight': '400',
+          'font-size': '13px',
+          'line-height': '16px',
+        },
+        '.typo-body-bold': {
+          'font-weight': '600',
+          'font-size': '13px',
+          'line-height': '16px',
+        },
+        '.typo-ui-l': {
+          'font-weight': '600',
+          'font-size': '14px',
+          'line-height': '22px',
+        },
+        '.typo-ui-m': {
+          'font-weight': '600',
+          'font-size': '12px',
+          'line-height': '22px',
+        },
+        '.typo-capital': {
+          'font-weight': '500',
+          'font-size': '12px',
+          'line-height': '15px',
+          'letter-spacing': '0.02em',
+          'text-transform': 'uppercase',
+        },
+        '.typo-caption': {
+          'font-weight': '400',
+          'font-size': '11px',
+          'line-height': '13px',
+        },
+        '.typo-caption-semibold': {
+          'font-weight': '600',
+          'font-size': '11px',
+          'line-height': '13px',
+        },
+      })
     }),
   ],
   content: [

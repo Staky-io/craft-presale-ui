@@ -4,26 +4,65 @@
     class="grid gap-12 w-full xxs:w-320"
     :class="{ [$style.hasErrors]: errors && errors.length }"
   >
-    <h2>
+    <h2 v-if="label">
       {{ label }}
     </h2>
-    <textarea
-      v-if="type === 'textarea'"
-      v-model="model"
-      :class="$style.input"
-      :placeholder="placeholder"
-      :rows="rows"
-      :cols="cols"
-    />
-    <input
-      v-else
-      v-model="model"
-      :class="$style.input"
-      :type="type"
-      :placeholder="placeholder"
-      :min="min"
-      :max="max"
+    <div
+      class="relative grid items-center after:content-[''] after:absolute after:left-0 after:top-0 after:w-full after:h-full after:border-primary after:rounded-15 after:pointer-events-none"
+      :class="[
+        isFocused ? 'after:border-2' : 'after:border-1',
+        {
+          'grid-cols-auto-1fr-auto px-24': type === 'number',
+        },
+      ]"
     >
+      <button
+        v-if="type === 'number'"
+        class="grid place-items-center w-20 h-20 text-white bg-primary rounded-full"
+        @click="model = Math.max(0, Number(model) - 1)"
+      >
+        <UtilsIcon
+          name="Math/Minus"
+          class="w-16 h-16"
+        />
+      </button>
+      <textarea
+        v-if="type === 'textarea'"
+        v-model="model"
+        :class="$style.input"
+        :placeholder="placeholder"
+        :rows="rows"
+        :cols="cols"
+        @focus="isFocused = true"
+        @blur="isFocused = false"
+      />
+      <input
+        v-else
+        v-model="model"
+        :class="[
+          $style.input,
+          {
+            'text-center': type === 'number',
+          },
+        ]"
+        :type="type"
+        :placeholder="placeholder"
+        :min="min"
+        :max="max"
+        @focus="isFocused = true"
+        @blur="isFocused = false"
+      >
+      <button
+        v-if="type === 'number'"
+        class="grid place-items-center w-20 h-20 text-white bg-primary rounded-full"
+        @click="model = Math.min(max, Number(model) + 1)"
+      >
+        <UtilsIcon
+          name="Math/Plus"
+          class="w-16 h-16"
+        />
+      </button>
+    </div>
   </label>
 </template>
 
@@ -82,9 +121,11 @@ const props = withDefaults(defineProps<Props>(), {
   placeholder: null,
   rows: 8,
   cols: null,
-  min: null,
-  max: null,
+  min: -Infinity,
+  max: Infinity,
 })
+
+const isFocused = ref<boolean>(false)
 
 const model = computed<ModelValue>({
   get() {
@@ -109,6 +150,6 @@ const model = computed<ModelValue>({
 }
 
 .input {
-  @apply px-12 py-8 bg-transparent border-1;
+  @apply relative px-24 py-16 text-grey-600 typo-section bg-transparent placeholder:text-grey-400;
 }
 </style>

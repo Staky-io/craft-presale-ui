@@ -11,21 +11,22 @@
         <div
           v-if="currentStep === LOGIN_STEPS.PICK"
           :key="LOGIN_STEPS.PICK"
-          class="grid"
+          class="grid gap-10"
         >
           <div v-if="!compatibleWallets.length">
             Sorry, this browser is not supported at the moment.
             <br>
             Please use Google Chrome / Brave on desktop, or MyIconWallet app on mobile.
           </div>
-          <button
+          <ControlsButtonAction
             v-for="(wallet, i) in compatibleWallets"
             v-else
             :key="`wallet-${i}`"
+            version="secondary"
             @click="connectWallet(wallet.id)"
           >
             {{ wallet.name }}
-          </button>
+          </ControlsButtonAction>
         </div>
         <div
           v-else-if="currentStep === LOGIN_STEPS.LEDGER"
@@ -110,7 +111,7 @@ import { storeToRefs } from 'pinia'
 import { useDeviceStore } from '@/stores/device'
 import { useLedgerStore } from '@/stores/ledger'
 
-const { name } = useRuntimeConfig()
+const { collection } = useRuntimeConfig()
 
 const isNonDesktopWarned = useState<boolean>('isNonDesktopWarned', () => false)
 
@@ -213,8 +214,8 @@ onMounted(async () => {
     isNonDesktopWarned.value = true
 
     notify.info({
-      title: `${name} on mobile`,
-      message: `To use ${name} on Mobile, you have to download the MyICONWallet app and browse to this url with it.`,
+      title: `${collection} on mobile`,
+      message: `To use ${collection} on Mobile, you have to download the MyICONWallet app and browse to this url with it.`,
       timeout: 10000,
     })
   }

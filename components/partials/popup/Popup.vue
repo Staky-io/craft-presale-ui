@@ -1,24 +1,27 @@
 <template>
   <div
     class="fixed top-0 left-0 grid w-screen h-screen z-100 py-10"
-    v-on="{ ...!blockOverlayClick && { click: closeOnClick } }"
+    @click="closeOnClick"
   >
-    <Container
-      class="grid gap-40"
-      :class="{ 'grid-rows-auto-1fr': requireButton }"
-    >
-      <button
-        v-if="requireButton"
-        class="justify-self-end"
-        @click="closeOnClick"
-      >
-        Close
-      </button>
+    <Container class="grid">
       <div
-        class="grid gap-10 content-start justify-self-center self-center w-full s:w-512 min-h-192 p-20 bg-white rounded-5"
+        class="grid gap-24 content-start justify-self-center self-center w-full s:w-256 min-h-160 p-20 bg-white rounded-15"
         @click.stop
       >
-        <slot name="header" />
+        <div class="grid gap-10 grid-flow-col items-center justify-between">
+          <h3 class="text-grey-900 typo-h2">
+            <slot name="header" />
+          </h3>
+          <button
+            class="grid place-items-center w-20 h-20 text-grey-400 transition-color hover:text-primary"
+            @click="closeOnClick"
+          >
+            <UtilsIcon
+              name="Cross"
+              class="w-full h-full"
+            />
+          </button>
+        </div>
         <slot name="body" />
       </div>
     </Container>
@@ -28,17 +31,21 @@
 <script setup lang="ts">
 const { emit, events } = useEventsBus()
 
-type Props = {
-  blockOverlayClick?: boolean
-  requireButton?: boolean
-}
-
-withDefaults(defineProps<Props>(), {
-  blockOverlayClick: false,
-  requireButton: false,
-})
-
 const closeOnClick = (): void => {
   emit(events.POPUP_CLOSE)
 }
+
+const closeOnEscape = ({ key }: KeyboardEvent): void => {
+  if (key === 'Escape') {
+    closeOnClick()
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', closeOnEscape)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', closeOnEscape)
+})
 </script>

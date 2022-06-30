@@ -167,7 +167,7 @@ export const useIconexListener = () => {
     }
   }
 
-  const ICONEX_HANDLE_CANCEL = ({ error = '' }: CancelParams): void => {
+  const ICONEX_HANDLE_CANCEL = ({ error }: CancelParams): void => {
     if (error) {
       notify.error({
         title: 'Error',

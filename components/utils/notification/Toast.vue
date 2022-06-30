@@ -1,20 +1,46 @@
 <template>
   <div
     ref="root"
-    :class="$style.container"
-    class="p-10 bg-white rounded-5 shadow"
+    :class="[
+      $style.container,
+      {
+        'text-success': type === 'success',
+        'text-warning': type === 'warning',
+        'text-error': type === 'error',
+        'text-info': type === 'info',
+        'text-grey-400': !type,
+      },
+    ]"
+    class="grid gap-12 grid-cols-auto-1fr-auto items-center p-16 bg-white bg-opacity-30 rounded-15 shadow"
     @mouseenter="isHovering = true"
     @mouseleave="isHovering = false"
   >
-    <button @click="closeNotificationToast">
-      Close
+    <div class="w-20 h-20 rounded-full bg-current">
+      <!-- TODO: import icons -->
+    </div>
+    <div class="grid gap-2">
+      <h3
+        v-if="title"
+        class="text-current text-14 font-medium"
+      >
+        {{ title }}
+      </h3>
+      <p
+        v-if="message"
+        class="text-grey-400 text-12 font-regular"
+      >
+        {{ message }}
+      </p>
+    </div>
+    <button
+      class="grid place-items-center w-20 h-20 text-grey-400 transition-color hover:text-current"
+      @click="closeNotificationToast"
+    >
+      <UtilsIcon
+        name="Cross"
+        class="w-full h-full"
+      />
     </button>
-    <h3 v-if="title">
-      {{ title }}
-    </h3>
-    <p v-if="message">
-      {{ message }}
-    </p>
   </div>
 </template>
 
@@ -44,7 +70,7 @@ const props = withDefaults(defineProps<Props>(), {
   title: null,
   message: null,
   position: 'top-right',
-  width: 300,
+  width: 350,
   height: null,
   timeout: 0,
   speed: 250,
@@ -183,7 +209,7 @@ onMounted(() => {
     display: v-bind(displayTimer);
     width: 100%;
     height: 4px;
-    background: black;
+    background: currentColor;
     transform: scaleX(v-bind(deltaTimeout));
     transform-origin: left;
     content: "";

@@ -7,7 +7,9 @@ import Icx from '@/assets/scripts/hw-app-icx/Icx'
 import { useUserStore } from '@/stores/user'
 
 const { iconNetwork } = useRuntimeConfig()
-const url = iconNetwork === 'testnet' ? 'https://sejong.net.solidwallet.io/' : 'https://ctz.solidwallet.io/'
+const isTestnet = iconNetwork === 'testnet'
+const url = isTestnet ? 'https://sejong.net.solidwallet.io/' : 'https://ctz.solidwallet.io/'
+const nid = isTestnet ? '53' : '1'
 const provider = new IconService.HttpProvider(`${url}api/v3`)
 const iconService = new IconService(provider)
 

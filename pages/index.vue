@@ -1,62 +1,70 @@
 <template>
-  <div class="grid gap-60 place-content-center place-items-center">
-    <div class="grid gap-24 grid-flow-col">
-      <div class="grid gap-24 content-between">
-        <div>
-          <h1 class="text-primary font-bold">
+  <div class="grid gap-32 place-content-center place-items-center">
+    <div class="grid gap-40 grid-flow-col">
+      <div class="grid gap-20 content-between self-center">
+        <div class="grid">
+          <client-only>
+            <div
+              class="grid gap-6 grid-flow-col items-center justify-start"
+              :class="isLived === null
+                ? 'text-primary'
+                : {
+                  'text-success': isLived,
+                  'text-error': !isLived,
+                }
+              "
+            >
+              <UtilsIcon
+                name="Dot"
+                class="w-12 h-12"
+              />
+              <span class="uppercase typo-capital">
+                Public sale is {{ status }}
+              </span>
+            </div>
+          </client-only>
+          <h1 class="mt-12 mb-4 text-grey-900 typo-h1">
             Public sale
           </h1>
-          <p v-if="referrer">
-            Using {{ referrer }} as referrer
+          <p class="text-grey-900 typo-body">
+            Buy <span class="typo-body-bold">NFT</span>, earn <span class="typo-body-bold">$CFT</span>
           </p>
         </div>
-        <div class="grid gap-16 w-full">
-          <div class="grid gap-8">
-            <ControlsFormInput
-              v-model="v$.mintNumber.$model"
-              :errors="v$.mintNumber.$errors"
-              type="number"
-              :min="0"
-              :max="remainingMintable"
-            />
-            <div class="grid gap-12 grid-flow-col justify-between items-center">
-              <span class="text-left">Total</span>
-              <div class="grid gap-4 grid-flow-col items-center">
-                <span class="text-right">{{ formStates.mintNumber * price }}</span>
-                <UtilsIcon
-                  name="Logo/Icon"
-                  class="w-12 h-12 text-[#00AC97]"
-                />
-              </div>
+        <div class="grid gap-12">
+          <ControlsFormInput
+            v-model="v$.mintNumber.$model"
+            :errors="v$.mintNumber.$errors"
+            type="number"
+            :min="0"
+            :max="remainingMintable"
+            placeholder="Amount"
+          />
+          <div class="grid gap-12 grid-flow-col justify-between items-center">
+            <span class="text-left text-primary typo-caption-semibold">Total</span>
+            <div class="grid gap-4 grid-flow-col items-center">
+              <UtilsIcon
+                name="Logo/Icon"
+                class="w-12 h-12 text-[#00AC97]"
+              />
+              <span class="text-right text-grey-400 typo-caption-semibold">{{ formStates.mintNumber * price }}</span>
             </div>
           </div>
-          <ControlsButtonAction
-            type="submit"
-            @click="presaleMintOnClick"
-          >
-            Mint
-          </ControlsButtonAction>
         </div>
+        <ControlsButtonAction
+          type="submit"
+          size="lg"
+          :is-locked="!isLived"
+          @click="presaleMintOnClick"
+        >
+          Mint
+        </ControlsButtonAction>
       </div>
       <img
         src="~/assets/images/unrevealed.png"
         alt="Unrevealed"
-        class="w-320 h-320 object-cover"
+        class="w-384 h-384 object-cover"
       >
     </div>
-
-    <span
-      v-if="freeMinted"
-      class="text-center"
-    >
-      Congratulations! You won <span class="text-primary">{{ freeMinted }}</span> free mints.
-      <br>
-      It will be airdropped to your wallet at the end of the public sale
-    </span>
-
-    <client-only>
-      <DisplaysCardReference v-if="isLoggedIn && isWhitelisted" />
-    </client-only>
   </div>
 </template>
 
@@ -66,6 +74,11 @@ import useVuelidate from '@vuelidate/core'
 import { required, decimal } from '@vuelidate/validators'
 import { useUserStore } from '@/stores/user'
 import { serializeQuery } from '@/assets/scripts/helpers'
+
+enum SALE_STATUS {
+  LIVE = 'live',
+  CLOSED = 'closed',
+}
 
 type FormStates = {
   mintNumber: number
@@ -87,7 +100,7 @@ useHead({
   titleTemplate: 'Presale - %s',
 })
 
-const { collection } = useRuntimeConfig()
+const { collection, status } = useRuntimeConfig()
 
 await useFetch('/api/free-mints')
 const route = useRoute()
@@ -110,6 +123,17 @@ const isWhitelistEnabled = ref<boolean>(false)
 
 const formStates = reactive<FormStates>({
   mintNumber: null,
+})
+
+const isLived = computed<boolean>(() => {
+  switch (status) {
+    case SALE_STATUS.LIVE:
+      return true
+    case SALE_STATUS.CLOSED:
+      return false
+    default:
+      return null
+  }
 })
 
 const v$ = useVuelidate<FormStates, FormRules>({
