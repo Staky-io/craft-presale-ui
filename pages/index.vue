@@ -19,7 +19,15 @@
                 class="w-12 h-12"
               />
               <span class="uppercase typo-capital">
-                Public sale is {{ isLive ? 'live' : 'close' }}
+                Public sale is {{ isLive ? 'live' : 'closed' }}
+              </span>
+            </div>
+            <div
+              v-if="isWhitelistEnabled"
+              class="grid mt-12 gap-6 grid-flow-col items-center justify-start text-primary"
+            >
+              <span class="uppercase typo-capital">
+                Whitelist is enabled and your are <span :class="isWhitelisted ? '' : 'text-error'">{{ isWhitelisted ? 'whitelisted' : 'not whitelisted' }}</span>
               </span>
             </div>
           </client-only>
@@ -53,7 +61,7 @@
         <ControlsButtonAction
           type="submit"
           size="lg"
-          :is-locked="!isLive"
+          :is-locked="!isLive || (isWhitelistEnabled && !isWhitelisted)"
           @click="presaleMintOnClick"
         >
           Mint
@@ -119,6 +127,8 @@ const isLoaded = ref<boolean>(false)
 const isLive = ref<boolean>(false)
 const isWhitelisted = ref<boolean>(false)
 const isWhitelistEnabled = ref<boolean>(false)
+const mintLimit = ref<number>(0)
+const userMintCount = ref<number>(0)
 
 const formStates = reactive<FormStates>({
   mintNumber: null,
@@ -136,10 +146,12 @@ const checkPresale = async (): Promise<void> => {
       remainingMintable.value = totalMintable.value - parseInt(await SCORECallReadOnly('presaleId'), 16)
       progress.value = (remainingMintable.value / totalMintable.value) * 100
       price.value = parseInt(await SCORECallReadOnly('presalePrice'), 16) / (10 ** 18)
+      mintLimit.value = parseInt(await SCORECallReadOnly('mintLimit'), 16)
 
       if (isLoggedIn.value) {
         isWhitelistEnabled.value = await SCORECallReadOnly('requireWhitelist') !== '0x0'
         isWhitelisted.value = await SCORECallReadOnly('isWhitelisted', { _address: address.value }) !== '0x0'
+        userMintCount.value = parseInt(await SCORECallReadOnly('mintCount', { _address: address.value }), 16)
       }
     }
   } catch (error) {
@@ -154,6 +166,12 @@ const presaleMintOnClick = (): void => {
     notify.error({
       title: 'Error',
       message: 'You need to log in first.',
+      timeout: 5000,
+    })
+  } else if (mintLimit.value > 0 && (userMintCount.value + formStates.mintNumber) <= mintLimit.value) {
+    notify.error({
+      title: 'Error',
+      message: 'You exceed the mint limit.',
       timeout: 5000,
     })
   }
