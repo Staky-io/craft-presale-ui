@@ -6,11 +6,11 @@
           <client-only>
             <div
               class="grid gap-6 grid-flow-col items-center justify-start"
-              :class="isLived === null
+              :class="isLive === null
                 ? 'text-primary'
                 : {
-                  'text-success': isLived,
-                  'text-error': !isLived,
+                  'text-success': isLive,
+                  'text-error': !isLive,
                 }
               "
             >
@@ -19,7 +19,7 @@
                 class="w-12 h-12"
               />
               <span class="uppercase typo-capital">
-                Public sale is {{ status }}
+                Public sale is {{ isLive ? 'live' : 'close' }}
               </span>
             </div>
           </client-only>
@@ -53,7 +53,7 @@
         <ControlsButtonAction
           type="submit"
           size="lg"
-          :is-locked="!isLived"
+          :is-locked="!isLive"
           @click="presaleMintOnClick"
         >
           Mint
@@ -75,11 +75,6 @@ import { required, decimal } from '@vuelidate/validators'
 import { useUserStore } from '@/stores/user'
 import { serializeQuery } from '@/assets/scripts/helpers'
 
-enum SALE_STATUS {
-  LIVE = 'live',
-  CLOSED = 'closed',
-}
-
 type FormStates = {
   mintNumber: number
 }
@@ -100,7 +95,7 @@ useHead({
   titleTemplate: 'Presale - %s',
 })
 
-const { collection, status } = useRuntimeConfig()
+const { collection } = useRuntimeConfig()
 
 await useFetch('/api/free-mints')
 const route = useRoute()
@@ -123,17 +118,6 @@ const isWhitelistEnabled = ref<boolean>(false)
 
 const formStates = reactive<FormStates>({
   mintNumber: null,
-})
-
-const isLived = computed<boolean>(() => {
-  switch (status) {
-    case SALE_STATUS.LIVE:
-      return true
-    case SALE_STATUS.CLOSED:
-      return false
-    default:
-      return null
-  }
 })
 
 const v$ = useVuelidate<FormStates, FormRules>({
