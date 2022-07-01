@@ -1,3 +1,4 @@
+import axios from 'axios'
 import IconService from 'icon-sdk-js'
 
 export const useScoreService = () => {
@@ -25,7 +26,37 @@ export const useScoreService = () => {
     }
   }
 
+  const getBlockData = async ({ blockHash }) => {
+    try {
+      const options = {
+        method: 'post',
+        url: `${url}api/v3`,
+        data: {
+          jsonrpc: '2.0',
+          method: 'icx_getBlockByHash',
+          id: 1234,
+          params: {
+            hash: blockHash,
+          },
+        },
+      }
+      return (await axios(options)).data.result
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+
+  const getTxResult = async ({ hash }) => {
+    try {
+      return await service.getTransactionResult(hash).execute()
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+
   return {
     SCORECallReadOnly,
+    getBlockData,
+    getTxResult,
   }
 }
