@@ -118,7 +118,7 @@ const { images } = storeToRefs(useImagesStore())
 const { isLoggedIn, address } = storeToRefs(useUserStore())
 
 const freeMinted = ref<number>(0)
-const referrer = ref<string>('')
+
 const totalMintable = ref<number>(10000)
 const remainingMintable = ref<number>(totalMintable.value)
 const progress = ref<number>(0)
@@ -168,17 +168,10 @@ const presaleMintOnClick = (): void => {
       message: 'You need to log in first.',
       timeout: 5000,
     })
-  } else if (mintLimit.value > 0 && (userMintCount.value + formStates.mintNumber) <= mintLimit.value) {
+  } else if (mintLimit.value > 0 && (userMintCount.value + formStates.mintNumber) >= mintLimit.value) {
     notify.error({
       title: 'Error',
       message: 'You exceed the mint limit.',
-      timeout: 5000,
-    })
-  }
-  if (route.query?.ref === address.value) {
-    notify.error({
-      title: 'Error',
-      message: 'You cannot self-refer.',
       timeout: 5000,
     })
   } else if (formStates.mintNumber > 200) {
@@ -205,7 +198,6 @@ const presaleMintOnClick = (): void => {
       params: {
         amount: formStates.mintNumber,
         price: price.value,
-        referrer: route.query?.ref,
       },
       handleGuard: true,
     })
@@ -220,11 +212,6 @@ watch(() => address.value, async (adr) => {
 }, { immediate: true })
 
 onMounted(async () => {
-  const { ref } = route.query
-  if (ref && typeof ref === 'string') {
-    referrer.value = ref
-  }
-
   await checkPresale()
 })
 </script>
