@@ -5,13 +5,16 @@
         to="/"
         class="grid gap-10 grid-flow-col items-center justify-self-start"
       >
-        <img
-          src="~/assets/images/logo.svg"
-          :alt="title"
-        >
-        <div class="text-grey-800 text-12 font-extrabold uppercase">
-          {{ title }}
-        </div>
+        <client-only>
+          <img
+            class="w-32 h-32 object-cover"
+            :src="images.logo"
+            :alt="title"
+          >
+          <div class="text-grey-800 text-12 font-extrabold uppercase">
+            {{ title }}
+          </div>
+        </client-only>
       </nuxt-link>
       <div class="grid gap-12 grid-flow-col items-center justify-self-end">
         <div class="grid gap-4 grid-flow-col items-center">
@@ -96,6 +99,7 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
+import { useImagesStore } from '@/stores/images'
 import { useUserStore } from '@/stores/user'
 import type { IconsNames } from '@/composables/useIconsComponents'
 
@@ -110,6 +114,7 @@ type SocialLink = {
   color: string
 }
 
+const { images } = storeToRefs(useImagesStore())
 const { isLoggedIn, truncatedAddress } = storeToRefs(useUserStore())
 const { emit, events } = useEventsBus()
 

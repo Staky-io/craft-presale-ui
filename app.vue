@@ -28,13 +28,23 @@
 import type { NotificationBannerProps } from '@/composables/useNotificationBanner'
 import type { NotificationToastProps } from '@/composables/useNotificationToast'
 import { useDeviceStore } from '@/stores/device'
+import { useImagesStore } from '@/stores/images'
 import BrowserDetector from '@/assets/scripts/detectors/BrowserDetector.class'
 import DeviceDetector from '@/assets/scripts/detectors/DeviceDetector.class'
 
-const notificationsBanner = useState<NotificationBannerProps>('notifications-banner')
-const notificationsToast = useState<NotificationToastProps[]>('notifications-toast')
+type IPFSQuery = {
+  image: string
+}
+
+const { logoHash, unrevealedHash } = useRuntimeConfig()
+
+const [{ data: dataLogo }, { data: dataUnrevealed }] = await Promise.all([
+  useAsyncData<IPFSQuery>('logo', () => $fetch(`https://craft-network.mypinata.cloud/ipfs/${logoHash}`)),
+  useAsyncData<IPFSQuery>('unrevealed', () => $fetch(`https://craft-network.mypinata.cloud/ipfs/${unrevealedHash}`)),
+])
 
 const { setBrowser, setDevice } = useDeviceStore()
+const { setImage } = useImagesStore()
 const { bus, events } = useEventsBus()
 const { listenIconex } = useIconexListener()
 const {
@@ -43,6 +53,12 @@ const {
   POPUP_HANDLE_GUARD,
   POPUP_CALL_ACTION,
 } = usePopupMethods()
+
+setImage('logo', dataLogo.value.image)
+setImage('unrevealed', dataUnrevealed.value.image)
+
+const notificationsBanner = useState<NotificationBannerProps>('notifications-banner')
+const notificationsToast = useState<NotificationToastProps[]>('notifications-toast')
 
 watch(() => bus.value.get(events.POPUP_CLOSE), POPUP_CLOSE_CURRENT)
 watch(() => bus.value.get(events.POPUP_GUARD), POPUP_HANDLE_GUARD)

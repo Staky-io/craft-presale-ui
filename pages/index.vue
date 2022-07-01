@@ -59,11 +59,13 @@
           Mint
         </ControlsButtonAction>
       </div>
-      <img
-        src="~/assets/images/unrevealed.png"
-        alt="Unrevealed"
-        class="w-384 h-384 object-cover"
-      >
+      <client-only>
+        <img
+          :src="images.unrevealed"
+          alt="Unrevealed"
+          class="w-384 h-384 object-cover"
+        >
+      </client-only>
     </div>
   </div>
 </template>
@@ -72,6 +74,7 @@
 import { storeToRefs } from 'pinia'
 import useVuelidate from '@vuelidate/core'
 import { required, decimal } from '@vuelidate/validators'
+import { useImagesStore } from '@/stores/images'
 import { useUserStore } from '@/stores/user'
 import { serializeQuery } from '@/assets/scripts/helpers'
 
@@ -103,6 +106,7 @@ const route = useRoute()
 const { emit, events } = useEventsBus()
 const { notify } = useNotificationToast()
 const { SCORECallReadOnly } = useScoreService()
+const { images } = storeToRefs(useImagesStore())
 const { isLoggedIn, address } = storeToRefs(useUserStore())
 
 const freeMinted = ref<number>(0)
