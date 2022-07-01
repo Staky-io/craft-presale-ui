@@ -1,14 +1,14 @@
 <template>
   <component
     :is="to ? NuxtLink : 'button'"
-    class="grid gap-10 grid-flow-col place-content-center place-items-center px-24 rounded-15 whitespace-nowrap select-none transition duration-200"
+    class="grid gap-10 grid-flow-col place-content-center place-items-center px-24 rounded-15 whitespace-nowrap select-none transition-default duration-200"
     :class="[
       isLocked
         ? 'bg-grey-000 text-grey-400 pointer-events-none'
         : {
           // Version
           'text-white bg-primary': version === 'primary',
-          'text-primary bg-primary bg-opacity-5': version === 'secondary',
+          'text-primary bg-primary bg-opacity-5 border-1 border-primary border-opacity-0 hover:border-opacity-100 focus:border-opacity-100': version === 'secondary',
           'text-white bg-success': version === 'success',
           'text-white bg-warning': version === 'warning',
           'text-white bg-error': version === 'error',

@@ -1,7 +1,10 @@
 <template>
   <header class="sticky top-0 py-10 bg-white">
     <Container class="grid gap-20 grid-flow-col items-center justify-between">
-      <div class="grid gap-10 grid-flow-col items-center justify-self-start">
+      <nuxt-link
+        to="/"
+        class="grid gap-10 grid-flow-col items-center justify-self-start"
+      >
         <img
           src="~/assets/images/logo.svg"
           :alt="title"
@@ -9,27 +12,62 @@
         <div class="text-grey-800 text-12 font-extrabold uppercase">
           {{ title }}
         </div>
-      </div>
-      <div class="grid gap-10 grid-flow-col items-center justify-self-end">
-        <a
-          v-for="(externalLink, i) in externalLinks"
-          :key="`externalLink-${i}`"
-          :href="externalLink.url"
-          class="text-grey-600 typo-ui-m transition-color duration-100 hover:text-primary"
-        >
-          {{ externalLink.name }}
-        </a>
-        <div class="grid gap-6 grid-flow-col items-center">
+      </nuxt-link>
+      <div class="grid gap-12 grid-flow-col items-center justify-self-end">
+        <div class="grid gap-4 grid-flow-col items-center">
+          <a
+            v-for="(externalLink, i) in externalLinks"
+            :key="`externalLink-${i}`"
+            :href="externalLink.url"
+            class="
+              px-8
+              py-2
+              text-grey-600
+              typo-ui-m
+              bg-primary
+              bg-opacity-0
+              rounded-5
+              transition-default
+              duration-100
+              hover:text-primary
+              hover:bg-opacity-5
+              focus:text-primary
+              focus:bg-opacity-5
+            "
+          >
+            {{ externalLink.name }}
+          </a>
+        </div>
+        <div class="grid gap-4 grid-flow-col items-center">
           <a
             v-for="(socialLink, i) in socialLinks"
             :key="`socialLink-${i}`"
             :href="socialLink.url"
-            class="grid place-items-center w-20 h-20"
+            class="
+              relative
+              grid
+              place-items-center
+              w-32
+              h-32
+              before:content-['']
+              before:absolute
+              before:left-0
+              before:top-0
+              before:w-full
+              before:h-full
+              before:rounded-full
+              before:bg-current
+              before:opacity-0
+              before:transition-opacity
+              before:duration-100
+              hover:before:opacity-5
+              focus:before:opacity-5
+            "
             :style="{ color: socialLink.color }"
           >
             <UtilsIcon
               :name="socialLink.icon"
-              class="w-full h-full"
+              class="w-20 h-20"
             />
           </a>
         </div>
@@ -38,15 +76,11 @@
             <ControlsButtonAction version="secondary">
               {{ truncatedAddress }}
             </ControlsButtonAction>
-            <button
-              class="grid place-items-center w-40 h-40 text-error bg-error bg-opacity-15 rounded-full"
+            <ControlsButtonIcon
+              version="error"
+              icon="Logout"
               @click="emit(events.POPUP_GUARD)"
-            >
-              <UtilsIcon
-                name="Logout"
-                class="w-20 h-20"
-              />
-            </button>
+            />
           </template>
           <ControlsButtonAction
             v-else
