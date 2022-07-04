@@ -59,7 +59,7 @@ import IconService from 'icon-sdk-js'
 import { storeToRefs } from 'pinia'
 import { useLedgerStore } from '@/stores/ledger'
 import { useUserStore } from '@/stores/user'
-
+import type {TxResult} from '@/composables/useScoreService'
 const { IconConverter, IconBuilder, IconAmount } = IconService
 
 type Props = {
@@ -190,7 +190,7 @@ const COMPLETE_PRESALEMINT = async (hash: string) => {
   try {
     ACTION_PRESALEMINT.isWaiting = false
     ACTION_PRESALEMINT.isLoading = true
-
+    console.log(hash)
     const { tx } = await makePresaleMint(hash)
 
     CALLBACK_PRESALEMINT(tx.txHash)
@@ -205,20 +205,22 @@ const COMPLETE_PRESALEMINT = async (hash: string) => {
   }
 }
 
-const HANDLE_RPC = async ({ error = '', payload }: { error?: string, payload?: string }) => {
+const HANDLE_RPC = async ({ error, result }: TxResult) => {
+  console.log(error,result)
   if (error) {
     RESET_LISTENER()
 
     notify.error({
       title: 'Error',
-      message: error,
+      message: error.message,
       timeout: 5000,
     })
-  } else if (payload) {
+  } else if (result) {
     isGlobalListening.value = false
     if (ACTION_PRESALEMINT.type === 'RPC' && ACTION_PRESALEMINT.isListening) {
       ACTION_PRESALEMINT.isListening = false
-      await COMPLETE_PRESALEMINT(payload)
+      console.log(result)
+      await COMPLETE_PRESALEMINT(result.blockHash)
     }
   }
 }
@@ -246,7 +248,7 @@ const TX_ROUTER = async ({ type, payload }) => {
     try {
       const result = await dipsatchLedger({ type, payload })
       if (type === 'REQUEST_JSON-RPC') {
-        HANDLE_RPC({ payload: result })
+        // HANDLE_RPC({ payload: result })
       } else {
         HANDLE_SIGN({ payload: result })
       }
