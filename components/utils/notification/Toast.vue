@@ -11,7 +11,7 @@
         'text-grey-400': !type,
       },
     ]"
-    class="grid gap-12 grid-cols-auto-1fr-auto items-center p-16 bg-white bg-opacity-30 rounded-15 shadow"
+    class="grid gap-12 grid-cols-auto-1fr-auto items-center p-16 bg-white rounded-15 shadow"
     @mouseenter="isHovering = true"
     @mouseleave="isHovering = false"
   >

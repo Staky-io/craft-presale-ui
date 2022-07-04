@@ -8,9 +8,9 @@
       {{ label }}
     </h2>
     <div
-      class="relative grid items-center after:content-[''] after:absolute after:left-0 after:top-0 after:w-full after:h-full after:border-primary after:rounded-15 after:pointer-events-none"
+      class="relative grid items-center bg-grey-000 rounded-15 border-1 border-primary transition-border duration-100"
       :class="[
-        isFocused ? 'after:border-2' : 'after:border-1',
+        isFocused ? 'border-opacity-100' : 'border-opacity-0',
         {
           'grid-cols-auto-1fr-auto px-24': type === 'number',
         },

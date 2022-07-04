@@ -169,6 +169,8 @@ export const useIconexListener = () => {
 
   const ICONEX_HANDLE_CANCEL = ({ error }: CancelParams): void => {
     if (error) {
+      emit(events.POPUP_CLOSE)
+
       notify.error({
         title: 'Error',
         message: error,

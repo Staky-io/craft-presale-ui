@@ -4,7 +4,7 @@
       <h2>
         <client-only>
           <template v-if="ACTION_PRESALEMINT.tx.hash">
-            You minted {{ amount }} {{ collection }}
+            Your NFT has been minted!
           </template>
           <template v-else-if="ACTION_PRESALEMINT.isLoading || ACTION_PRESALEMINT.isWaiting">
             Minting...
@@ -21,19 +21,33 @@
         <div
           v-if="ACTION_PRESALEMINT.tx.hash"
           key="success"
+          class="grid gap-20"
         >
+          <img
+            :src="image"
+            alt="Unrevealed"
+          >
+          <span class="test-grey-600 typo-ui-m">
+            Congratulations! The artwork has officially been minted as an NFT on the ICX blockchain to the collection {{ collection }}.
+          </span>
           <!-- <UtilsTxLink :id="ACTION_PRESALEMINT.id" /> -->
           <ControlsButtonAction @click="closePopup">
             Close
           </ControlsButtonAction>
         </div>
-
         <!-- LOADING -->
         <div
           v-else-if="ACTION_PRESALEMINT.isLoading || ACTION_PRESALEMINT.isWaiting"
           key="loading"
+          class="grid gap-20"
         >
-          mint your...
+          <img
+            :src="image"
+            alt="Unrevealed"
+          >
+          <span class="test-grey-600 typo-ui-m">
+            Your NFT is currently minting. Please wait for few minutes.
+          </span>
         </div>
       </transition>
     </template>
@@ -52,6 +66,7 @@ type Props = {
   amount: number
   price: number
   referrer?: string
+  image: string
 }
 
 const props = defineProps<Props>()

@@ -69,7 +69,7 @@
       </div>
       <client-only>
         <img
-          :src="images.unrevealed"
+          :src="currentImage"
           alt="Unrevealed"
           class="w-384 h-384 object-cover"
         >
@@ -138,6 +138,8 @@ const v$ = useVuelidate<FormStates, FormRules>({
   mintNumber: { required, decimal },
 }, formStates)
 
+const currentImage = computed<string>(() => images.value.unrevealed)
+
 const checkPresale = async (): Promise<void> => {
   try {
     isLive.value = await SCORECallReadOnly('presaleOpened') !== '0x0'
@@ -198,6 +200,7 @@ const presaleMintOnClick = (): void => {
       params: {
         amount: formStates.mintNumber,
         price: price.value,
+        image: currentImage,
       },
       handleGuard: true,
     })
