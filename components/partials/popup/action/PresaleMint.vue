@@ -28,7 +28,7 @@
             alt="Unrevealed"
           >
           <span class="test-grey-600 typo-ui-m">
-            Congratulations! The artwork has officially been minted as an NFT on the ICX blockchain to the collection {{ collection }}.
+            Congratulations! The NFT has been minted.
           </span>
           <!-- <UtilsTxLink :id="ACTION_PRESALEMINT.id" /> -->
           <ControlsButtonAction @click="closePopup">
@@ -46,7 +46,7 @@
             alt="Unrevealed"
           >
           <span class="test-grey-600 typo-ui-m">
-            Your NFT is currently minting. Please wait for few minutes.
+            Your NFT is being minted. Please wait for few minutes.
           </span>
         </div>
       </transition>
@@ -205,7 +205,9 @@ const COMPLETE_PRESALEMINT = async (hash: string) => {
   }
 }
 
-const HANDLE_RPC = async ({ error, result }: TxResult) => {
+const HANDLE_RPC = async (payload) => {
+  
+  const {error,result} = payload.payload
   console.log(error,result)
   if (error) {
     RESET_LISTENER()
@@ -219,8 +221,7 @@ const HANDLE_RPC = async ({ error, result }: TxResult) => {
     isGlobalListening.value = false
     if (ACTION_PRESALEMINT.type === 'RPC' && ACTION_PRESALEMINT.isListening) {
       ACTION_PRESALEMINT.isListening = false
-      console.log(result)
-      await COMPLETE_PRESALEMINT(result.blockHash)
+      await COMPLETE_PRESALEMINT(result)
     }
   }
 }
