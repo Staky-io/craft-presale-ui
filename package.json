@@ -13,6 +13,7 @@
     "push": "git push origin",
     "pull": "git pull --rebase",
     "release": "git push --follow-tags origin",
+    "start": "nuxt start",
     "lint": "eslint --ext .js,.ts,.vue --ignore-path .gitignore --ignore-pattern modules/**/*.plugin.js && stylelint \"**/*.{vue,css}\" --ignore-path .gitignore",
     "test": "cypress open",
     "bump-first": "standard-version --first-release",
