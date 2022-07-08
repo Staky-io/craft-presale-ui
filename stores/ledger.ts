@@ -14,6 +14,8 @@ const nid = isTestnet ? '53' : '1'
 const provider = new IconService.HttpProvider(`${url}api/v3`)
 const iconService = new IconService(provider)
 
+type SignatureKey = string | SignatureKey[]
+
 type LedgerStatus = {
   isFetching: boolean
   currentPage: number
@@ -30,7 +32,7 @@ type LedgerAddressData = {
 
 type LedgerAddressesList = LedgerAddressData[]
 
-const serialize = (array) => array
+const serialize = (array: SignatureKey[]): string => array
   .filter((item) => !Array.isArray(item) || item.length)
   .map((item) => (Array.isArray(item) ? `{${serialize(item)}}` : item))
   .join('.')
@@ -72,7 +74,7 @@ export const useLedgerStore = defineStore('ledger-store', () => {
         reject(new Error('A JSONRPC error occured. It may be related to your balance or network condition.'))
       })
   })
-  const HANDLE_LEDGER_RPC = async ({ payload }) => {
+  const HANDLE_LEDGER_RPC = async (payload) => {
     try {
       const {
         value,
@@ -116,12 +118,34 @@ export const useLedgerStore = defineStore('ledger-store', () => {
       throw new Error(error)
     }
   }
-  const HANDLE_LEDGER_SIGN = async (data) => {
+  const HANDLE_LEDGER_SIGN = async (payload: { hash: string, from: string }) => {
     try {
       const transport = await TransportWebHID.create()
       const icx = new Icx(transport)
       const storePath = addressPath.value
-      const serialized = `icx_sendTransaction.data.{method.ledgerSign.params.{hash.${data.payload.hash}}}.dataType.call.from.${data.payload.from}.nid.0x1.nonce.0x1.stepLimit.0x0.timestamp.0x0.to.cx0000000000000000000000000000000000000000.version.0x3`
+      const serialized = serialize([
+        'icx_sendTransaction',
+        ...[
+          'data',
+          [
+            'method',
+            'ledgerSign',
+            'params',
+            [
+              'hash',
+              payload.hash,
+            ],
+          ],
+        ],
+        ...['dataType', 'call'],
+        ...['from', payload.from],
+        ...['nid', '0x1'],
+        ...['nonce', '0x1'],
+        ...['stepLimit', '0x0'],
+        ...['timestamp', '0x0'],
+        ...['to', 'cx0000000000000000000000000000000000000000'],
+        ...['version', '0x3'],
+      ])
       const signature = await icx.signTransaction(storePath, serialized)
 
       return signature.signedRawTxBase64
@@ -129,13 +153,13 @@ export const useLedgerStore = defineStore('ledger-store', () => {
       throw new Error(error)
     }
   }
-  const dipsatchLedger = async (data) => {
+  const dipsatchLedger = async ({ type, payload }) => {
     try {
       if (addressPath.value) {
         return await (
-          data.type === 'REQUEST_JSON-RPC'
-            ? HANDLE_LEDGER_RPC(data)
-            : HANDLE_LEDGER_SIGN(data)
+          type === 'REQUEST_JSON-RPC'
+            ? HANDLE_LEDGER_RPC(payload)
+            : HANDLE_LEDGER_SIGN(payload)
         )
       }
       throw new Error('Ledger Path error. Please log out and log in again')

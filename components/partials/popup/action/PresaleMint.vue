@@ -59,8 +59,10 @@ import IconService from 'icon-sdk-js'
 import { storeToRefs } from 'pinia'
 import { useLedgerStore } from '@/stores/ledger'
 import { useUserStore } from '@/stores/user'
-import type {TxResult} from '@/composables/useScoreService'
+import type { TxResult } from '@/composables/useScoreService'
+
 const { IconConverter, IconBuilder, IconAmount } = IconService
+const { CallTransactionBuilder } = IconBuilder
 
 type Props = {
   amount: number
@@ -69,26 +71,7 @@ type Props = {
   image: string
 }
 
-const props = defineProps<Props>()
-
-const { CallTransactionBuilder } = IconBuilder
-
-const { collection, iconNetwork, scoreAddress } = useRuntimeConfig()
-
-const { emit, bus, events } = useEventsBus()
-const { getBlockData, getTxResult } = useScoreService()
-const { notify } = useNotificationToast()
-const {
-  ICONEX_HANDLE_CANCEL,
-} = useIconexListener()
-
-const { dipsatchLedger } = useLedgerStore()
-const { address, wallet } = storeToRefs(useUserStore())
-
-const nid = iconNetwork === 'testnet' ? '83' : '1'
-
-const isGlobalListening = ref<boolean>(false)
-const ACTION_PRESALEMINT = reactive<{
+type ActionData = {
   type: string
   tx: Record<string, unknown>
   query: Record<string, unknown>
@@ -96,7 +79,31 @@ const ACTION_PRESALEMINT = reactive<{
   isWaiting: boolean
   isLoading: boolean
   isSuccess: boolean
-}>({
+}
+
+type MintQuery = {
+  jsonrpc: string
+  method: string
+  params: ReturnType<typeof IconConverter.toRawTransaction>
+  id: number
+}
+
+const props = defineProps<Props>()
+
+const { iconNetwork, scoreAddress } = useRuntimeConfig()
+
+const { emit, bus, events } = useEventsBus()
+const { getBlockData, getTxResult } = useScoreService()
+const { notify } = useNotificationToast()
+const { ICONEX_HANDLE_CANCEL } = useIconexListener()
+
+const { dipsatchLedger } = useLedgerStore()
+const { address, wallet } = storeToRefs(useUserStore())
+
+const nid = iconNetwork === 'testnet' ? '83' : '1'
+
+const isGlobalListening = ref<boolean>(false)
+const ACTION_PRESALEMINT = reactive<ActionData>({
   type: 'RPC',
   tx: {},
   query: {},
@@ -106,12 +113,7 @@ const ACTION_PRESALEMINT = reactive<{
   isSuccess: false,
 })
 
-const getPresaleMintQuery = async (): Promise<{
-  jsonrpc: string
-  method: string
-  params: ReturnType<typeof IconConverter.toRawTransaction>
-  id: number
-}> => {
+const getPresaleMintQuery = async (): Promise<MintQuery> => {
   const { amount, price, referrer } = props
   const stepLimit = `0x${(800000 * amount).toString(16)}`
   const tx = new CallTransactionBuilder()
@@ -138,14 +140,14 @@ const getPresaleMintQuery = async (): Promise<{
   }
 }
 
-const makePresaleMint = async (hash): Promise<{ block: string, tx: { txHash: string } }> => new Promise((resolve, reject) => {
+const makePresaleMint = async (hash: string): Promise<{ block: unknown, tx: { txHash: string } }> => new Promise((resolve, reject) => {
   try {
     const interval = setInterval(async () => {
-      const tx = await getTxResult({ hash })
+      const tx = await getTxResult(hash)
       if (tx.status === 1) {
         clearInterval(interval)
 
-        const block = await getBlockData({ blockHash: tx.blockHash })
+        const block = await getBlockData(tx.blockHash)
 
         resolve({ block, tx })
       } else {
@@ -158,7 +160,7 @@ const makePresaleMint = async (hash): Promise<{ block: string, tx: { txHash: str
   }
 })
 
-const RESET_PRESALEMINT = () => {
+const RESET_PRESALEMINT = (): void => {
   ACTION_PRESALEMINT.tx = {}
   ACTION_PRESALEMINT.query = {}
   ACTION_PRESALEMINT.isListening = false
@@ -167,12 +169,12 @@ const RESET_PRESALEMINT = () => {
   ACTION_PRESALEMINT.isSuccess = false
 }
 
-const RESET_LISTENER = () => {
+const RESET_LISTENER = (): void => {
   isGlobalListening.value = false
   RESET_PRESALEMINT()
 }
 
-const CALLBACK_PRESALEMINT = async (hash: string) => {
+const CALLBACK_PRESALEMINT = (hash: string): void => {
   try {
     RESET_PRESALEMINT()
     ACTION_PRESALEMINT.tx = { hash }
@@ -186,11 +188,10 @@ const CALLBACK_PRESALEMINT = async (hash: string) => {
   }
 }
 
-const COMPLETE_PRESALEMINT = async (hash: string) => {
+const COMPLETE_PRESALEMINT = async (hash: string): Promise<void> => {
   try {
     ACTION_PRESALEMINT.isWaiting = false
     ACTION_PRESALEMINT.isLoading = true
-    console.log(hash)
     const { tx } = await makePresaleMint(hash)
 
     CALLBACK_PRESALEMINT(tx.txHash)
@@ -205,10 +206,8 @@ const COMPLETE_PRESALEMINT = async (hash: string) => {
   }
 }
 
-const HANDLE_RPC = async (payload) => {
-  
-  const {error,result} = payload.payload
-  console.log(error,result)
+const HANDLE_RPC = async (payload): Promise<void> => {
+  const { error, result } = payload.payload
   if (error) {
     RESET_LISTENER()
 
@@ -226,7 +225,7 @@ const HANDLE_RPC = async (payload) => {
   }
 }
 
-const HANDLE_SIGN = ({ error = '', payload }) => {
+const HANDLE_SIGN = ({ error = '', payload }): void => {
   if (error) {
     RESET_LISTENER()
 
@@ -240,7 +239,7 @@ const HANDLE_SIGN = ({ error = '', payload }) => {
   }
 }
 
-const TX_ROUTER = async ({ type, payload }) => {
+const TX_ROUTER = async ({ type, payload }: { type: string, payload: MintQuery }): Promise<void> => {
   if (!wallet.value || wallet.value === 'iconex') {
     window.dispatchEvent(new CustomEvent('ICONEX_RELAY_REQUEST', {
       detail: { type, payload },
@@ -265,7 +264,7 @@ const TX_ROUTER = async ({ type, payload }) => {
   }
 }
 
-const DISPATCH_PRESALEMINT = async () => {
+const DISPATCH_PRESALEMINT = async (): Promise<void> => {
   const { amount, price, referrer } = props
 
   ACTION_PRESALEMINT.query = {

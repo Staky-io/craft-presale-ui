@@ -67,13 +67,15 @@
           Mint
         </ControlsButtonAction>
       </div>
-      <client-only>
-        <img
-          :src="currentImage"
-          alt="Unrevealed"
-          class="w-384 h-384 object-cover"
-        >
-      </client-only>
+      <div class="w-384 h-384">
+        <client-only>
+          <img
+            :src="currentImage"
+            alt="Unrevealed"
+            class="w-full h-full object-cover"
+          >
+        </client-only>
+      </div>
     </div>
   </div>
 </template>
@@ -109,7 +111,6 @@ useHead({
 const { collection } = useRuntimeConfig()
 
 await useFetch('/api/free-mints')
-const route = useRoute()
 
 const { emit, events } = useEventsBus()
 const { notify } = useNotificationToast()
@@ -118,7 +119,6 @@ const { images } = storeToRefs(useImagesStore())
 const { isLoggedIn, address } = storeToRefs(useUserStore())
 
 const freeMinted = ref<number>(0)
-
 const totalMintable = ref<number>(10000)
 const remainingMintable = ref<number>(totalMintable.value)
 const progress = ref<number>(0)

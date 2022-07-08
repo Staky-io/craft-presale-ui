@@ -1,9 +1,19 @@
 import axios from 'axios'
 import IconService from 'icon-sdk-js'
+import type TransactionResult from 'icon-sdk-js/build/data/Formatter/TransactionResult'
 
 export type TxResult = {
-  result?: {blockHash:string,blockHeight:string,eventLogs:Array<unknown>,status:string, to:string}
-  error?: {code:number,message:string}
+  result?: {
+    blockHash: string
+    blockHeight: string
+    eventLogs: unknown[]
+    status: string
+    to: string
+  }
+  error?: {
+    code:number
+    message:string
+  }
 }
 
 export const useScoreService = () => {
@@ -16,12 +26,12 @@ export const useScoreService = () => {
 
   const service = new IconService(new IconService.HttpProvider(`${url}api/v3`))
 
-  const SCORECallReadOnly = async (_method: string, _params?: unknown): Promise<string> => {
+  const SCORECallReadOnly = async (method: string, params?: unknown): Promise<string> => {
     try {
       const txObj = new IconService.IconBuilder.CallBuilder()
         .to(scoreAddress)
-        .method(_method)
-      const call = _params ? txObj.params(_params) : txObj
+        .method(method)
+      const call = params ? txObj.params(params) : txObj
 
       return await service
         .call(call.build())
@@ -31,7 +41,7 @@ export const useScoreService = () => {
     }
   }
 
-  const getBlockData = async ({ blockHash }) => {
+  const getBlockData = async (blockHash: string): Promise<unknown> => {
     try {
       const options = {
         method: 'post',
@@ -51,9 +61,8 @@ export const useScoreService = () => {
     }
   }
 
-  const getTxResult = async ({ hash }) => {
+  const getTxResult = async (hash: string): Promise<TransactionResult> => {
     try {
-      console.log(hash)
       return await service.getTransactionResult(hash).execute()
     } catch (error) {
       throw new Error(error)
