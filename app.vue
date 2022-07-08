@@ -3,9 +3,12 @@
     v-if="notificationsBanner"
     v-bind="notificationsBanner"
   />
-  <NuxtLayout>
-    <NuxtPage />
-  </NuxtLayout>
+  <div class="grid grid-rows-auto-1fr h-full">
+    <PartialsNavigationHeader />
+    <Container class="grid">
+      <NuxtPage />
+    </Container>
+  </div>
   <transition name="fade">
     <UtilsOverlay v-if="!!currentPopup.component" />
   </transition>
@@ -72,3 +75,11 @@ onBeforeMount(() => {
   listenIconex()
 })
 </script>
+
+<style lang="scss" module>
+html,
+body,
+[id=__nuxt] {
+  @apply h-full;
+}
+</style>

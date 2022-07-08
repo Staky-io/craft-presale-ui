@@ -100,10 +100,6 @@ type FormRules = {
   [key in keyof FormStates]: Record<string, FormValidators>
 }
 
-definePageMeta({
-  layout: 'full-page',
-})
-
 useHead({
   titleTemplate: 'Presale - %s',
 })
