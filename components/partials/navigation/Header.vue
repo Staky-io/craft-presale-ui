@@ -122,7 +122,7 @@ const { collection, scoreAddress } = useRuntimeConfig()
 
 const title = ref<string>(collection)
 const externalLinks = ref<ExternalLink[]>([
-  { name: 'Guide', url: 'https://medium.com/' },
+  { name: 'Guide', url: 'https://medium.com/@craftnetwork/tutorial-how-to-mint-an-nft-on-a-launchpad-presale-671914a5b3dd' },
   { name: 'Marketplace', url: 'https://craft.network/collection/'+scoreAddress },
 ])
 const socialLinks = ref<SocialLink[]>([

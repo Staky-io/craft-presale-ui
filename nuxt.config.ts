@@ -10,7 +10,6 @@ export default defineNuxtConfig({
     logoHash: process.env.APP_LOGO_HASH,
     unrevealedHash: process.env.APP_UNREVEALED_HASH,
   },
-  ssr: false,
   app: {
     head: {
       title: process.env.APP_NAME,
