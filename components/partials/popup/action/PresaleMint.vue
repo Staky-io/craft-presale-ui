@@ -248,7 +248,7 @@ const TX_ROUTER = async ({ type, payload }: { type: string, payload: MintQuery }
     try {
       const result = await dipsatchLedger({ type, payload })
       if (type === 'REQUEST_JSON-RPC') {
-        // HANDLE_RPC({ payload: result })
+        HANDLE_RPC({ payload: result })
       } else {
         HANDLE_SIGN({ payload: result })
       }
