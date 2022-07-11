@@ -118,12 +118,12 @@ const { images } = storeToRefs(useImagesStore())
 const { isLoggedIn, truncatedAddress } = storeToRefs(useUserStore())
 const { emit, events } = useEventsBus()
 
-const { collection } = useRuntimeConfig()
+const { collection, scoreAddress } = useRuntimeConfig()
 
 const title = ref<string>(collection)
 const externalLinks = ref<ExternalLink[]>([
-  { name: 'Guide', url: '' },
-  { name: 'Marketplace', url: '' },
+  { name: 'Guide', url: 'https://medium.com/' },
+  { name: 'Marketplace', url: 'https://craft.network/collection/'+scoreAddress },
 ])
 const socialLinks = ref<SocialLink[]>([
   { icon: 'Logo/Discord', url: '', color: '#667CD3' },
