@@ -19,7 +19,7 @@
       <button
         v-if="type === 'number'"
         class="grid place-items-center w-20 h-20 text-white bg-primary rounded-full"
-        @click="model = Math.max(0, Number(model) - 1)"
+        @click="updateModel(Math.max(0, Number(model) - 1))"
       >
         <UtilsIcon
           name="Math/Minus"
@@ -28,6 +28,7 @@
       </button>
       <textarea
         v-if="type === 'textarea'"
+        ref="input"
         v-model="model"
         :class="$style.input"
         :placeholder="placeholder"
@@ -38,6 +39,7 @@
       />
       <input
         v-else
+        ref="input"
         v-model="model"
         :class="[
           $style.input,
@@ -55,7 +57,7 @@
       <button
         v-if="type === 'number'"
         class="grid place-items-center w-20 h-20 text-white bg-primary rounded-full"
-        @click="model = Math.min(max, Number(model) + 1)"
+        @click="updateModel(Math.min(max, Number(model) + 1))"
       >
         <UtilsIcon
           name="Math/Plus"
@@ -125,6 +127,7 @@ const props = withDefaults(defineProps<Props>(), {
   max: Infinity,
 })
 
+const input = ref<HTMLElement | null>(null)
 const isFocused = ref<boolean>(false)
 
 const model = computed<ModelValue>({
@@ -142,6 +145,11 @@ const model = computed<ModelValue>({
     }
   },
 })
+
+const updateModel = (value: number): void => {
+  model.value = value
+  input.value.focus()
+}
 </script>
 
 <style lang="scss" module>
