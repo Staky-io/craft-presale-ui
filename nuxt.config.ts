@@ -1,4 +1,5 @@
 import { defineNuxtConfig } from 'nuxt'
+import inject from '@rollup/plugin-inject'
 
 export default defineNuxtConfig({
   publicRuntimeConfig: {
@@ -40,6 +41,18 @@ export default defineNuxtConfig({
           autoprefixer: {},
         },
       },
+    },
+  },
+  vite: {
+    plugins: [
+      inject({
+        Buffer: ['buffer', 'Buffer'],
+      }),
+    ],
+    optimizeDeps: {
+      include: [
+        'buffer',
+      ],
     },
   },
 })

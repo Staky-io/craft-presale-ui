@@ -87,6 +87,7 @@ module.exports = {
     },
   ],
   ignorePatterns: [
+    'assets/scripts/libs/**/*.js',
     'assets/scripts/libs/**/*.ts',
   ],
   globals: {

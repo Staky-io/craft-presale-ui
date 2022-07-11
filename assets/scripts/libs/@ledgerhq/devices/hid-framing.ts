@@ -1,4 +1,5 @@
 import { TransportError } from "@/assets/scripts/libs/@ledgerhq/errors";
+
 export type ResponseAcc =
   | {
       data: Buffer;
