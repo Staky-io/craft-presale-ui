@@ -85,8 +85,5 @@
     "stylelint-config-rational-order": "^0.1.2",
     "stylelint-order": "^5.0.0",
     "stylelint-scss": "^4.2.0"
-  },
-  "engines": {
-    "node": "^14.14.0"
   }
 }

@@ -20,7 +20,7 @@
 
 // FIXME drop:
 import { splitPath, foreach, hexToBase64 } from "./utils";
-import type Transport from "@ledgerhq/hw-transport";
+import type Transport from "@/assets/scripts/@ledgerhq/hw-transport/Transport";
 
 /**
  * ICON API
