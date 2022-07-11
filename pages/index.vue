@@ -86,7 +86,6 @@ import useVuelidate from '@vuelidate/core'
 import { required, decimal } from '@vuelidate/validators'
 import { useImagesStore } from '@/stores/images'
 import { useUserStore } from '@/stores/user'
-import { serializeQuery } from '@/assets/scripts/helpers'
 
 type FormStates = {
   mintNumber: number
@@ -106,15 +105,12 @@ useHead({
 
 const { collection } = useRuntimeConfig()
 
-await useFetch('/api/free-mints')
-
 const { emit, events } = useEventsBus()
 const { notify } = useNotificationToast()
 const { SCORECallReadOnly } = useScoreService()
 const { images } = storeToRefs(useImagesStore())
 const { isLoggedIn, address } = storeToRefs(useUserStore())
 
-const freeMinted = ref<number>(0)
 const totalMintable = ref<number>(10000)
 const remainingMintable = ref<number>(totalMintable.value)
 const progress = ref<number>(0)
@@ -202,13 +198,6 @@ const presaleMintOnClick = (): void => {
     })
   }
 }
-
-watch(() => address.value, async (adr) => {
-  if (adr) {
-    const { data } = await useFetch(serializeQuery('/api/free-mints', { address: address.value }))
-    freeMinted.value = data.value as number
-  }
-}, { immediate: true })
 
 onMounted(async () => {
   await checkPresale()
