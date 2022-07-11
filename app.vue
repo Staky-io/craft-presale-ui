@@ -6,7 +6,7 @@
   <div class="grid grid-rows-auto-1fr h-full">
     <PartialsNavigationHeader />
     <Container class="grid">
-      <NuxtPage />
+      <SectionsPresale />
     </Container>
   </div>
   <transition name="fade">
