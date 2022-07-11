@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
 
 import axios from 'axios'
-import TransportWebHID from '@/assets/scripts/@ledgerhq/hw-transport-webhid/TransportWebHID'
+import TransportWebHID from '@/assets/scripts/libs/@ledgerhq/hw-transport-webhid/TransportWebHID'
 import IconService from 'icon-sdk-js'
-import Icx from '@/assets/scripts/hw-app-icx/Icx'
+import Icx from '@/assets/scripts/libs/hw-app-icx/Icx'
 
 import { useUserStore } from '@/stores/user'
 

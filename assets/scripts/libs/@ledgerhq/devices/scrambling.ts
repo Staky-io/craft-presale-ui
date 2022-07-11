@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 export function wrapApdu(apdu: Buffer, key: Buffer) {
   if (apdu.length === 0) return apdu;
   const result = Buffer.alloc(apdu.length);

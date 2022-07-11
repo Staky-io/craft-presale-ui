@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import semver from "semver";
 
 /**

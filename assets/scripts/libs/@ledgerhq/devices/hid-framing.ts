@@ -1,6 +1,4 @@
-/* eslint-disable */
-
-import { TransportError } from "@/assets/scripts/@ledgerhq/errors";
+import { TransportError } from "@/assets/scripts/libs/@ledgerhq/errors";
 export type ResponseAcc =
   | {
       data: Buffer;

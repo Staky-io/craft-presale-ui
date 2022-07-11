@@ -1,14 +1,12 @@
-/* eslint-disable */
-
 import EventEmitter from "events";
-import type { DeviceModel } from "@/assets/scripts/@ledgerhq/devices";
+import type { DeviceModel } from "@/assets/scripts/libs/@ledgerhq/devices";
 import {
   TransportRaceCondition,
   TransportError,
   StatusCodes,
   getAltStatusMessage,
   TransportStatusError,
-} from "@/assets/scripts/@ledgerhq/errors";
+} from "@/assets/scripts/libs/@ledgerhq/errors";
 export {
   TransportError,
   TransportStatusError,

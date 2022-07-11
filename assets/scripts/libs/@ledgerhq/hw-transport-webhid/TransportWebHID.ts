@@ -1,21 +1,19 @@
-/* eslint-disable */
-
-import Transport from "@/assets/scripts/@ledgerhq/hw-transport/Transport";
+import Transport from "@/assets/scripts/libs/@ledgerhq/hw-transport/Transport";
 import type {
   Observer,
   DescriptorEvent,
   Subscription,
-} from "@/assets/scripts/@ledgerhq/hw-transport/Transport";
-import hidFraming from "@/assets/scripts/@ledgerhq/devices/hid-framing";
-import { identifyUSBProductId, ledgerUSBVendorId } from "@/assets/scripts/@ledgerhq/devices";
-import type { DeviceModel } from "@/assets/scripts/@ledgerhq/devices";
-import { log } from "@/assets/scripts/@ledgerhq/logs";
+} from "@/assets/scripts/libs/@ledgerhq/hw-transport/Transport";
+import hidFraming from "@/assets/scripts/libs/@ledgerhq/devices/hid-framing";
+import { identifyUSBProductId, ledgerUSBVendorId } from "@/assets/scripts/libs/@ledgerhq/devices";
+import type { DeviceModel } from "@/assets/scripts/libs/@ledgerhq/devices";
+import { log } from "@/assets/scripts/libs/@ledgerhq/logs";
 import {
   TransportOpenUserCancelled,
   DisconnectedDeviceDuringOperation,
   DisconnectedDevice,
   TransportError,
-} from "@/assets/scripts/@ledgerhq/errors";
+} from "@/assets/scripts/libs/@ledgerhq/errors";
 
 const ledgerDevices = [
   {
