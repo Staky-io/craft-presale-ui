@@ -30,15 +30,21 @@
   "dependencies": {
     "@ledgerhq/hw-transport-webhid": "^6.27.1",
     "@ledgerhq/hw-transport-webusb": "^6.27.1",
-    "@rollup/plugin-inject": "^4.0.4",
     "@vuelidate/core": "^2.0.0-alpha.41",
     "@vuelidate/validators": "^2.0.0-alpha.29",
     "axios": "^0.27.2",
-    "icon-sdk-js": "^1.2.1",
+    "bignumber.js": "^9.0.2",
+    "buffer": "^6.0.3",
+    "icon-sdk-js": "^0.0.18",
+    "js-sha3": "^0.8.0",
     "nuxt": "3.0.0-rc.3",
     "pinia": "^2.0.14",
     "pinia-plugin-persistedstate": "^1.6.1",
-    "tailwindcss": "^3.0.24"
+    "secp256k1": "^4.0.3",
+    "tailwindcss": "^3.0.24",
+    "utf8": "^3.0.0",
+    "uuid": "^8.3.2",
+    "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.0.0",
@@ -46,9 +52,17 @@
     "@commitlint/prompt-cli": "^17.0.0",
     "@nuxt/babel-preset-app": "^2.13.3",
     "@nuxt/types": "^2.15.8",
+    "@nuxt/webpack-builder": "^3.0.0-rc.4",
     "@nuxtjs/eslint-config": "^2.0.0",
+    "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@pinia/nuxt": "^0.1.9",
+    "@rollup/plugin-commonjs": "^22.0.1",
+    "@rollup/plugin-inject": "^4.0.4",
+    "@types/node": "^18.0.3",
+    "@types/secp256k1": "^4.0.3",
     "@types/tailwindcss": "^3.0.10",
+    "@types/utf8": "^3.0.1",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.27.0",
     "@typescript-eslint/parser": "^5.27.0",
     "@vue/cli-plugin-babel": "^4.4.6",
@@ -60,7 +74,9 @@
     "babel-plugin-component": "^1.1.1",
     "babel-preset-vue": "^2.0.2",
     "core-js": "^3.22.5",
+    "css-loader": "^6.7.1",
     "cypress": "^9.6.1",
+    "esbuild-loader": "^2.19.0",
     "eslint": "^7.4.0",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-import-resolver-webpack": "^0.13.2",
@@ -84,9 +100,9 @@
     "stylelint-config-airbnb": "^0.0.0",
     "stylelint-config-rational-order": "^0.1.2",
     "stylelint-order": "^5.0.0",
-    "stylelint-scss": "^4.2.0"
-  },
-  "engines": {
-    "node": "^14.14.0"
+    "stylelint-scss": "^4.2.0",
+    "url-loader": "^4.1.1",
+    "vue-loader": "^17.0.0",
+    "webpack": "^5.73.0"
   }
 }
