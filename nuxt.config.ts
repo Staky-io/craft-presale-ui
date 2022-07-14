@@ -1,8 +1,9 @@
 import { defineNuxtConfig } from 'nuxt'
 import webpack from 'webpack'
-// import inject from '@rollup/plugin-inject'
-// import commonjs from '@rollup/plugin-commonjs'
-// import { esbuildCommonjs } from '@originjs/vite-plugin-commonjs'
+import inject from '@rollup/plugin-inject'
+import commonjs from '@rollup/plugin-commonjs'
+
+const isDev = process.env.NODE_ENV === 'development'
 
 export default defineNuxtConfig({
   publicRuntimeConfig: {
@@ -46,35 +47,33 @@ export default defineNuxtConfig({
       },
     },
   },
-  builder: 'webpack',
-  webpack: {
-    plugins: [
-      // Work around for Buffer is undefined:
-      // https://github.com/webpack/changelog-v5/issues/10
-      new webpack.ProvidePlugin({
-        Buffer: ['buffer', 'Buffer'],
-      }),
-      new webpack.ProvidePlugin({
-        process: 'process/browser',
-      }),
-    ],
-  },
-  // vite: {
-  //   plugins: [
-  //     // commonjs(),
-  //     inject({
-  //       Buffer: ['buffer', 'Buffer'],
-  //     }),
-  //   ],
-  //   optimizeDeps: {
-  //     include: [
-  //       'buffer',
-  //     ],
-  //     esbuildOptions: {
-  //       plugins: [
-  //         esbuildCommonjs(['@ledgerhq/hw-transport-webhid']),
-  //       ],
-  //     },
-  //   },
-  // },
+  builder: isDev ? 'vite' : 'webpack',
+  ...isDev
+    ? {
+      vite: {
+        plugins: [
+          commonjs(),
+          inject({
+            Buffer: ['buffer', 'Buffer'],
+          }),
+        ],
+        optimizeDeps: {
+          include: [
+            'buffer',
+          ],
+        },
+      },
+    }
+    : {
+      webpack: {
+        plugins: [
+          new webpack.ProvidePlugin({
+            Buffer: ['buffer', 'Buffer'],
+          }),
+          new webpack.ProvidePlugin({
+            process: 'process/browser',
+          }),
+        ],
+      },
+    },
 })
