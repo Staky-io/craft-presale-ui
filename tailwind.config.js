@@ -489,6 +489,11 @@ module.exports = {
           'font-size': '12px',
           'line-height': '22px',
         },
+        '.typo-ui-s': {
+          'font-weight': '600',
+          'font-size': '10px',
+          'line-height': '18px',
+        },
         '.typo-capital': {
           'font-weight': '500',
           'font-size': '12px',

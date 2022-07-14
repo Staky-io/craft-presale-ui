@@ -15,8 +15,11 @@
     @mouseenter="isHovering = true"
     @mouseleave="isHovering = false"
   >
-    <div class="w-20 h-20 rounded-full bg-current">
-      <!-- TODO: import icons -->
+    <div class="grid place-items-center w-20 h-20 rounded-full bg-current">
+      <UtilsIcon
+        :name="notificationIcon"
+        class="w-20 h-20 text-white"
+      />
     </div>
     <div class="grid gap-2">
       <h3
@@ -45,6 +48,7 @@
 </template>
 
 <script setup lang="ts">
+import type { IconsNames } from '@/composables/useIconsComponents'
 import type { NotificationToastTypes, NotificationToastPositions, NotificationToastProps } from '@/composables/useNotificationToast'
 
 // TODO: use `NotificationToastProps` type when Vue handles the conditional props (https://github.com/vuejs/core/issues/4294)
@@ -103,6 +107,21 @@ const offsets = reactive<{
 })
 
 const displayTimer = computed<string>(() => (props.timeout ? 'block' : 'none'))
+
+const notificationIcon = computed<IconsNames>(() => {
+  switch (props.type) {
+    case 'success':
+      return 'Notification/Success'
+    case 'warning':
+      return 'Notification/Warning'
+    case 'error':
+      return 'Notification/Error'
+    case 'info':
+      return 'Notification/Info'
+    default:
+      return 'Notification/Neutral'
+  }
+})
 
 const transitionDuration = computed<number>(() => Math.max(1, props.speed))
 

@@ -16,6 +16,7 @@
         },
       {
         // Size
+        'h-32 typo-ui-s': size === 'sm',
         'h-40 typo-ui-m': size === 'md',
         'h-48 typo-ui-l': size === 'lg',
       },
@@ -48,6 +49,7 @@ type Version =
   | 'info'
 
 type Size =
+  | 'sm'
   | 'md'
   | 'lg'
 

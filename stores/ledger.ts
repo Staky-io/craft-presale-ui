@@ -173,19 +173,21 @@ export const useLedgerStore = defineStore('ledger-store', () => {
       const transport = await TransportWebHID.create()
       const icx = new Icx(transport)
 
-      const ledgerBook: LedgerAddressesList = await Promise.all([...new Array(ITEMS_PER_PAGE)].map(async (_, index) => {
-        const id = ITEMS_PER_PAGE * page + index
-        const { address } = await icx.getAddress(`44'/4801368'/0'/0'/${id}'`)
+      const ledgerBook: LedgerAddressesList = []
+      for (let index = (ITEMS_PER_PAGE * page); index < ((ITEMS_PER_PAGE * page) + ITEMS_PER_PAGE); index++) {
+        // eslint-disable-next-line no-await-in-loop
+        const { address } = await icx.getAddress(`44'/4801368'/0'/0'/${index}'`)
+        // eslint-disable-next-line no-await-in-loop
         const result = await iconService.getBalance(String(address)).execute()
         const balance = IconService.IconConverter.toNumber(result) / 10 ** 18
-        return {
-          id,
+        ledgerBook.push({
+          id: index,
           address: String(address),
-          path: `44'/4801368'/0'/0'/${id}'`,
+          path: `44'/4801368'/0'/0'/${index}'`,
           balance,
           isLoading: false,
-        } as LedgerAddressData
-      }))
+        })
+      }
 
       return ledgerBook
     } catch (error) {
@@ -224,10 +226,14 @@ export const useLedgerStore = defineStore('ledger-store', () => {
         ledgerStatus.currentPage = page
       })
       .catch((error) => {
-        ledgerStatus.error = error
+        const stringError = String(error)
+        let message = stringError
+        if (stringError.includes('TransportOpenUserCancelled')) message = 'Ledger connection canceled.'
+        else if (stringError.includes('TransportError')) message = 'Something wrong happened. Please retry later.'
+        ledgerStatus.error = message
         notify.error({
           title: 'Error',
-          message: error,
+          message,
           timeout: 5000,
         })
       })

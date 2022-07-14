@@ -5,7 +5,12 @@
   >
     <Container class="grid">
       <div
-        class="grid gap-24 content-start justify-self-center self-center w-full s:w-256 min-h-160 p-20 bg-white rounded-15"
+        class="grid gap-24 content-start justify-self-center self-center w-full p-20 bg-white rounded-15 transition-width duration-200"
+        :class="{
+          's:w-256': size === 's',
+          's:w-320': size === 'm',
+          's:w-576': size === 'l',
+        }"
         @click.stop
       >
         <div class="grid gap-10 grid-flow-col items-center justify-between">
@@ -29,6 +34,16 @@
 </template>
 
 <script setup lang="ts">
+type Size = 's' | 'm' | 'l'
+
+type Props = {
+  size?: Size
+}
+
+withDefaults(defineProps<Props>(), {
+  size: 's',
+})
+
 const { emit, events } = useEventsBus()
 
 const closeOnClick = (): void => {
