@@ -7,11 +7,6 @@ const icons = {
   'Chevron/Left': markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Chevron/Left.vue'))),
   'Chevron/Right': markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Chevron/Right.vue'))),
   'Chevron/Up': markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Chevron/Up.vue'))),
-  Copy: markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Copy.vue'))),
-  Cross: markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Cross.vue'))),
-  Dot: markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Dot.vue'))),
-  Login: markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Login.vue'))),
-  Logout: markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Logout.vue'))),
   'Logo/Discord': markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Logo/Discord.vue'))),
   'Logo/Github': markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Logo/Github.vue'))),
   'Logo/Icon': markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Logo/Icon.vue'))),
@@ -24,6 +19,12 @@ const icons = {
   'Notification/Neutral': markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Notification/Neutral.vue'))),
   'Notification/Success': markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Notification/Success.vue'))),
   'Notification/Warning': markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Notification/Warning.vue'))),
+  Copy: markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Copy.vue'))),
+  Cross: markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Cross.vue'))),
+  Dot: markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Dot.vue'))),
+  Login: markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Login.vue'))),
+  Logout: markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Logout.vue'))),
+  Menu: markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Menu.vue'))),
 }
 
 export type IconsNames = keyof typeof icons

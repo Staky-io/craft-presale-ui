@@ -1,6 +1,6 @@
 <template>
   <div class="grid gap-32 place-content-center place-items-center">
-    <div class="grid gap-40 grid-flow-col">
+    <div class="grid gap-40 m:grid-flow-col">
       <div class="grid gap-20 content-between self-center">
         <div class="grid">
           <client-only>
@@ -67,7 +67,7 @@
           Mint
         </ControlsButtonAction>
       </div>
-      <div class="w-384 h-384">
+      <div class="w-288 xxs:w-320 l:w-384 h-288 xxs:h-320 l:h-384">
         <client-only>
           <img
             :src="currentImage"

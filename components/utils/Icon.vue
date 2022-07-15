@@ -1,7 +1,12 @@
 <template>
   <component
     :is="icon"
-    class="text-current inline-block transition-all duration-200"
+    class="text-current inline-block transition-all"
+    :class="{
+      'duration-100': transition === 'slow',
+      'duration-200': !transition,
+      'duration-400': transition === 'quick',
+    }"
     v-bind="$attrs"
   />
 </template>
@@ -11,6 +16,7 @@ import type { IconsNames, IconsComponents } from '@/composables/useIconsComponen
 
 type Props = {
   name: IconsNames
+  transition?: 'quick' | 'slow'
 }
 
 const icons = useIconsComponents()

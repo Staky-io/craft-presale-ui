@@ -34,7 +34,7 @@
     }"
   >
     <UtilsIcon
-      name="Logout"
+      :name="icon"
       class="w-20 h-20"
     />
   </component>
