@@ -15,8 +15,7 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
-      title: process.env.APP_NAME,
-      titleTemplate: `%s - ${process.env.APP_NAME}`,
+      title: process.env.APP_TITLE || process.env.APP_COLLECTION,
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       ],

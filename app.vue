@@ -46,6 +46,12 @@ const [{ data: dataLogo }, { data: dataUnrevealed }] = await Promise.all([
   useAsyncData<IPFSQuery>('unrevealed', () => $fetch(`https://craft-network.mypinata.cloud/ipfs/${unrevealedHash}`)),
 ])
 
+useHead({
+  link: [
+    { rel: 'shortcut icon', href: dataLogo.value.image },
+  ],
+})
+
 const { setBrowser, setDevice } = useDeviceStore()
 const { setImage } = useImagesStore()
 const { bus, events } = useEventsBus()

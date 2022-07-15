@@ -99,10 +99,6 @@ type FormRules = {
   [key in keyof FormStates]: Record<string, FormValidators>
 }
 
-useHead({
-  titleTemplate: 'Presale - %s',
-})
-
 const { collection } = useRuntimeConfig()
 
 const { emit, events } = useEventsBus()
