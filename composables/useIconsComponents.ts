@@ -19,12 +19,17 @@ const icons = {
   'Notification/Neutral': markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Notification/Neutral.vue'))),
   'Notification/Success': markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Notification/Success.vue'))),
   'Notification/Warning': markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Notification/Warning.vue'))),
+  'State/Error': markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/State/Error.vue'))),
+  'State/Info': markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/State/Info.vue'))),
+  'State/Success': markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/State/Success.vue'))),
+  'State/Warning': markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/State/Warning.vue'))),
   Copy: markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Copy.vue'))),
   Cross: markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Cross.vue'))),
   Dot: markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Dot.vue'))),
   Login: markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Login.vue'))),
   Logout: markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Logout.vue'))),
   Menu: markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Menu.vue'))),
+  Message: markRaw(defineAsyncComponent(() => import('@/assets/scripts/icons/Message.vue'))),
 }
 
 export type IconsNames = keyof typeof icons

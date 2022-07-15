@@ -94,6 +94,7 @@
         </client-only>
       </div>
       <ControlsButtonIcon
+        class="m:hidden"
         icon="Menu"
         @click="isMenuOpen = !isMenuOpen"
       />

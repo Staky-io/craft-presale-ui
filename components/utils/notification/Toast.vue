@@ -111,15 +111,15 @@ const displayTimer = computed<string>(() => (props.timeout ? 'block' : 'none'))
 const notificationIcon = computed<IconsNames>(() => {
   switch (props.type) {
     case 'success':
-      return 'Notification/Success'
+      return 'State/Success'
     case 'warning':
-      return 'Notification/Warning'
+      return 'State/Warning'
     case 'error':
-      return 'Notification/Error'
+      return 'State/Error'
     case 'info':
-      return 'Notification/Info'
+      return 'State/Info'
     default:
-      return 'Notification/Neutral'
+      return 'Message'
   }
 })
 
