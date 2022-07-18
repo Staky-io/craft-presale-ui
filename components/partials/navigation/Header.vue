@@ -116,7 +116,6 @@
             v-for="(externalLink, i) in externalLinks"
             :key="`externalLink-${i}`"
             :href="externalLink.url"
-            target="blank"
             class="
               px-8
               py-2

@@ -35,7 +35,7 @@
             Public sale
           </h1>
           <p class="text-grey-900 typo-body">
-            Mint <span class="typo-body-bold">a NFT from {{collection}}</span> and earn <a href="https://craft.network/cft" target="blank" class="text-craft">$CFT tokens</a>
+            Buy <span class="typo-body-bold">NFT</span>, earn <span class="typo-body-bold">$CFT</span>
           </p>
         </div>
         <div class="grid gap-12">
@@ -74,18 +74,6 @@
             alt="Unrevealed"
             class="w-full h-full object-cover"
           >
-          <template v-if="isLive && totalMintable">
-            <div class="relative mt-12 w-full h-4 bg-grey-200 text-center">
-              <div
-                class="absolute to-)0 bottom-0 left-0 h-full bg-primary"
-                :style="{ width: `${progress}%` }"
-              />
-            </div>
-          </template>
-          <div class="grid text-center">
-            <span class="font-furore text-24 text-primary">{{remainingMintable}}</span>
-            <span class="typo-caption-s text-grey-400">remaining</span>
-          </div>
         </client-only>
       </div>
     </div>
@@ -119,7 +107,7 @@ const { SCORECallReadOnly } = useScoreService()
 const { images } = storeToRefs(useImagesStore())
 const { isLoggedIn, address } = storeToRefs(useUserStore())
 
-const totalMintable = ref<number>(0)
+const totalMintable = ref<number>(10000)
 const remainingMintable = ref<number>(totalMintable.value)
 const progress = ref<number>(0)
 const price = ref<number>(200)
@@ -145,12 +133,10 @@ const checkPresale = async (): Promise<void> => {
     isLive.value = await SCORECallReadOnly('presaleOpened') !== '0x0'
 
     if (isLive.value) {
-      totalMintable.value = parseInt(await SCORECallReadOnly('maxPresale'), 16)
       remainingMintable.value = totalMintable.value - parseInt(await SCORECallReadOnly('presaleId'), 16)
       progress.value = (remainingMintable.value / totalMintable.value) * 100
       price.value = parseInt(await SCORECallReadOnly('presalePrice'), 16) / (10 ** 18)
       mintLimit.value = parseInt(await SCORECallReadOnly('mintLimit'), 16)
-
 
       if (isLoggedIn.value) {
         isWhitelistEnabled.value = await SCORECallReadOnly('requireWhitelist') !== '0x0'
