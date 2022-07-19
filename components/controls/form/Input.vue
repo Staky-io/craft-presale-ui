@@ -18,6 +18,7 @@
     >
       <button
         v-if="type === 'number'"
+        ref="buttonMinus"
         class="grid place-items-center w-20 h-20 text-white bg-primary rounded-full"
         @click="updateModel(Math.max(0, Number(model) - 1))"
       >
@@ -35,7 +36,7 @@
         :rows="rows"
         :cols="cols"
         @focus="isFocused = true"
-        @blur="isFocused = false"
+        @blur="onBlur"
       />
       <input
         v-else
@@ -52,10 +53,11 @@
         :min="min"
         :max="max"
         @focus="isFocused = true"
-        @blur="isFocused = false"
+        @blur="onBlur"
       >
       <button
         v-if="type === 'number'"
+        ref="buttonPlus"
         class="grid place-items-center w-20 h-20 text-white bg-primary rounded-full"
         @click="updateModel(Math.min(max, Number(model) + 1))"
       >
@@ -128,6 +130,8 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const input = ref<HTMLElement | null>(null)
+const buttonMinus = ref<EventTarget | null>(null)
+const buttonPlus = ref<EventTarget | null>(null)
 const isFocused = ref<boolean>(false)
 
 const model = computed<ModelValue>({
@@ -149,6 +153,10 @@ const model = computed<ModelValue>({
 const updateModel = (value: number): void => {
   model.value = value
   input.value.focus()
+}
+
+const onBlur = (event: FocusEvent) => {
+  if (![buttonMinus.value, buttonPlus.value].includes(event.relatedTarget)) isFocused.value = false
 }
 </script>
 
