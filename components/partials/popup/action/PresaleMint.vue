@@ -193,7 +193,6 @@ const COMPLETE_PRESALEMINT = async (hash: string): Promise<void> => {
     ACTION_PRESALEMINT.isWaiting = false
     ACTION_PRESALEMINT.isLoading = true
     const { tx } = await makePresaleMint(hash)
-
     CALLBACK_PRESALEMINT(tx.txHash)
   } catch (error) {
     RESET_PRESALEMINT()
@@ -248,12 +247,12 @@ const TX_ROUTER = async ({ type, payload }: { type: string, payload: MintQuery }
     try {
       const result = await dipsatchLedger({ type, payload })
       if (type === 'REQUEST_JSON-RPC') {
-        HANDLE_RPC({ payload: result })
+        HANDLE_RPC({ payload: { result } })
       } else {
-        HANDLE_SIGN({ payload: result })
+        HANDLE_SIGN({ payload: { result } })
       }
     } catch (error) {
-      HANDLE_RPC({ error: error.message })
+      HANDLE_RPC({ payload: { error: error.message } })
 
       notify.error({
         title: 'Error',

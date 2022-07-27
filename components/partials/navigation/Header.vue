@@ -22,6 +22,7 @@
             v-for="(externalLink, i) in externalLinks"
             :key="`externalLink-${i}`"
             :href="externalLink.url"
+            target="blank"
             class="
               px-8
               py-2
@@ -46,6 +47,7 @@
             v-for="(socialLink, i) in socialLinks"
             :key="`socialLink-${i}`"
             :href="socialLink.url"
+            target="blank"
             class="
               relative
               grid

@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia'
 
 import axios from 'axios'
-import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import IconService from 'icon-sdk-js'
 import Icx from '@/assets/scripts/libs/hw-app-icx/Icx'
 
 import { useUserStore } from '@/stores/user'
+import TransportWebUsb from '@ledgerhq/hw-transport-webusb'
 
 const { iconNetwork } = useRuntimeConfig()
 const isTestnet = iconNetwork === 'testnet'
@@ -85,7 +85,7 @@ export const useLedgerStore = defineStore('ledger-store', () => {
         stepLimit,
         timestamp,
       } = payload.params
-      const transport = await TransportWebHID.create()
+      const transport = await TransportWebUsb.create()
       const icx = new Icx(transport)
       const storePath = addressPath.value
       const serialized = serialize([
@@ -95,6 +95,7 @@ export const useLedgerStore = defineStore('ledger-store', () => {
           [
             'method',
             data.method,
+            'params',
             Object.entries(data.params)
               .sort(([a], [b]) => Number(a > b) - 0.5)
               .reduce((accu, curr) => [...accu, ...curr], []),
@@ -121,7 +122,7 @@ export const useLedgerStore = defineStore('ledger-store', () => {
   }
   const HANDLE_LEDGER_SIGN = async (payload: { hash: string, from: string }) => {
     try {
-      const transport = await TransportWebHID.create()
+      const transport = await TransportWebUsb.create()
       const icx = new Icx(transport)
       const storePath = addressPath.value
       const serialized = serialize([
@@ -170,7 +171,7 @@ export const useLedgerStore = defineStore('ledger-store', () => {
   }
   const getLedgerAddresses = async (page: number): Promise<LedgerAddressesList> => {
     try {
-      const transport = await TransportWebHID.create()
+      const transport = await TransportWebUsb.create()
       const icx = new Icx(transport)
 
       const ledgerBook: LedgerAddressesList = []
@@ -246,10 +247,11 @@ export const useLedgerStore = defineStore('ledger-store', () => {
     // States
     ledgerAddresses,
     ledgerStatus,
+    addressPath,
 
     // Actions
     dipsatchLedger,
     selectLedgerAddress,
     setLedgerPage,
   }
-})
+}, { persist: true })

@@ -56,6 +56,7 @@ const { setBrowser, setDevice } = useDeviceStore()
 const { setImage } = useImagesStore()
 const { bus, events } = useEventsBus()
 const { listenIconex } = useIconexListener()
+
 const {
   currentPopup,
   POPUP_CLOSE_CURRENT,
