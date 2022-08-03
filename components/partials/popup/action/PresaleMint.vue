@@ -93,7 +93,7 @@ const props = defineProps<Props>()
 const { iconNetwork, scoreAddress } = useRuntimeConfig()
 
 const { emit, bus, events } = useEventsBus()
-const { getBlockData, getTxResult } = useScoreService()
+const { getBlockData, getTxResult, getStepLimit } = useScoreService()
 const { notify } = useNotificationToast()
 const { ICONEX_HANDLE_CANCEL } = useIconexListener()
 
@@ -115,7 +115,16 @@ const ACTION_PRESALEMINT = reactive<ActionData>({
 
 const getPresaleMintQuery = async (): Promise<MintQuery> => {
   const { amount, price, referrer } = props
-  const stepLimit = `0x${(800000 * amount).toString(16)}`
+  const stepLimit = await getStepLimit(
+    address.value,
+    'presaleMint',
+    scoreAddress,
+    {
+      _amount: amount.toString(),
+      ...referrer && { _referrer: referrer },
+    },
+    (price * amount),
+  )
   const tx = new CallTransactionBuilder()
     .from(address.value)
     .to(scoreAddress)
