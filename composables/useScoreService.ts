@@ -72,29 +72,32 @@ export const useScoreService = () => {
   }
   const getStepLimit = async (
     from:string, method:string, score:string, params?: unknown, value?: number,
-  ): Promise<string> => {
-    const debug = (iconNetwork === 'testnet') ? 'https://sejong.net.solidwallet.io/api/v3d' : 'https://ctz.solidwallet.io/api/debug/v3'
-    const stepLimit = (await axios.post(debug, {
-      id: 1234,
-      jsonrpc: '2.0',
-      method: 'debug_estimateStep',
-      params: {
-        from,
-        data: {
-          method,
-          params: params || null,
+  ): Promise<string | object> => {
+    try {
+      const debug = (iconNetwork === 'testnet') ? 'https://sejong.net.solidwallet.io/api/v3d' : 'https://ctz.solidwallet.io/api/debug/v3'
+      const stepLimit = (await axios.post(debug, {
+        id: 1234,
+        jsonrpc: '2.0',
+        method: 'debug_estimateStep',
+        params: {
+          from,
+          data: {
+            method,
+            params: params || null,
+          },
+          dataType: 'call',
+          nid: `0x${parseFloat(nid).toString(16)}`,
+          nonce: '0x1',
+          timestamp: `0x${((new Date()).getTime() * 1000).toString(16)}`,
+          to: score,
+          value: value ? `0x${(value * (10 ** 18)).toString(16)}` : null,
+          version: '0x3',
         },
-        dataType: 'call',
-        nid: `0x${parseFloat(nid).toString(16)}`,
-        nonce: '0x1',
-        timestamp: `0x${((new Date()).getTime() * 1000).toString(16)}`,
-        to: score,
-        value: value ? `0x${(value * (10 ** 18)).toString(16)}` : null,
-        version: '0x3',
-
-      },
-    })).data.result
-    return (stepLimit.toString())
+      })).data.result
+      return (stepLimit.toString())
+    } catch (error) {
+      return error.response.data
+    }
   }
 
   return {

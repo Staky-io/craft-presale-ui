@@ -125,27 +125,36 @@ const getPresaleMintQuery = async (): Promise<MintQuery> => {
     },
     (price * amount),
   )
-  const tx = new CallTransactionBuilder()
-    .from(address.value)
-    .to(scoreAddress)
-    .stepLimit(stepLimit)
-    .nid(IconConverter.toBigNumber(nid))
-    .nonce(IconConverter.toBigNumber('1'))
-    .version(IconConverter.toBigNumber('3'))
-    .timestamp((new Date()).getTime() * 1000)
-    .value((IconAmount.of(price * amount, IconAmount.Unit.ICX).toLoop()))
-    .method('presaleMint')
-    .params({
-      _amount: amount.toString(),
-      ...referrer && { _referrer: referrer },
-    })
-    .build()
 
-  return {
-    jsonrpc: '2.0',
-    method: 'icx_sendTransaction',
-    params: IconConverter.toRawTransaction(tx),
-    id: 1198,
+  if (stepLimit.error) {
+    notify.error({
+      title: 'Error',
+      message: stepLimit.error.message,
+      timeout: 5000,
+    })
+  } else {
+    const tx = new CallTransactionBuilder()
+      .from(address.value)
+      .to(scoreAddress)
+      .stepLimit(stepLimit)
+      .nid(IconConverter.toBigNumber(nid))
+      .nonce(IconConverter.toBigNumber('1'))
+      .version(IconConverter.toBigNumber('3'))
+      .timestamp((new Date()).getTime() * 1000)
+      .value((IconAmount.of(price * amount, IconAmount.Unit.ICX).toLoop()))
+      .method('presaleMint')
+      .params({
+        _amount: amount.toString(),
+        ...referrer && { _referrer: referrer },
+      })
+      .build()
+
+    return {
+      jsonrpc: '2.0',
+      method: 'icx_sendTransaction',
+      params: IconConverter.toRawTransaction(tx),
+      id: 1198,
+    }
   }
 }
 
