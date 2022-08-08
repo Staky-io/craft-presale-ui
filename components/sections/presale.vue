@@ -35,7 +35,11 @@
             Public sale
           </h1>
           <p class="text-grey-900 typo-body">
-            Mint <span class="typo-body-bold">a NFT from {{collection}}</span> and earn <a href="https://craft.network/cft" target="blank" class="text-craft">$CFT tokens</a>
+            Mint <span class="typo-body-bold">a NFT from {{ collection }}</span> and earn <a
+              href="https://craft.network/cft"
+              target="blank"
+              class="text-craft"
+            >$CFT tokens</a>
           </p>
         </div>
         <div class="grid gap-12">
@@ -83,7 +87,7 @@
             </div>
           </template>
           <div class="grid text-center">
-            <span class="font-furore text-24 text-primary">{{remainingMintable}}</span>
+            <span class="font-furore text-24 text-primary">{{ remainingMintable }}</span>
             <span class="typo-caption-s text-grey-400">remaining</span>
           </div>
         </client-only>
@@ -122,7 +126,7 @@ const { isLoggedIn, address } = storeToRefs(useUserStore())
 const totalMintable = ref<number>(0)
 const remainingMintable = ref<number>(totalMintable.value)
 const progress = ref<number>(0)
-const price = ref<number>(200)
+const price = ref<number>(0)
 const isLoaded = ref<boolean>(false)
 const isLive = ref<boolean>(false)
 const isWhitelisted = ref<boolean>(false)
@@ -150,7 +154,6 @@ const checkPresale = async (): Promise<void> => {
       progress.value = (remainingMintable.value / totalMintable.value) * 100
       price.value = parseInt(await SCORECallReadOnly('presalePrice'), 16) / (10 ** 18)
       mintLimit.value = parseInt(await SCORECallReadOnly('mintLimit'), 16)
-
 
       if (isLoggedIn.value) {
         isWhitelistEnabled.value = await SCORECallReadOnly('requireWhitelist') !== '0x0'
