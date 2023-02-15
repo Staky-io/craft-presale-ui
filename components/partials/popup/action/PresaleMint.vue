@@ -125,7 +125,7 @@ const getPresaleMintQuery = async (): Promise<MintQuery> => {
     },
     (price * amount),
   )
-
+  console.log(stepLimit)
   if (stepLimit.error) {
     notify.error({
       title: 'Error',
@@ -136,7 +136,7 @@ const getPresaleMintQuery = async (): Promise<MintQuery> => {
     const tx = new CallTransactionBuilder()
       .from(address.value)
       .to(scoreAddress)
-      .stepLimit(stepLimit)
+      .stepLimit(`0x${parseInt((Number(stepLimit) * 1.1), 10).toString(16)}`)
       .nid(IconConverter.toBigNumber(nid))
       .nonce(IconConverter.toBigNumber('1'))
       .version(IconConverter.toBigNumber('3'))
