@@ -42,8 +42,8 @@ type IPFSQuery = {
 const { logoHash, unrevealedHash } = useRuntimeConfig()
 
 const [{ data: dataLogo }, { data: dataUnrevealed }] = await Promise.all([
-  useAsyncData<IPFSQuery>('logo', () => $fetch(`https://craft-network.mypinata.cloud/ipfs/${logoHash}`)),
-  useAsyncData<IPFSQuery>('unrevealed', () => $fetch(`https://craft-network.mypinata.cloud/ipfs/${unrevealedHash}`)),
+  useAsyncData<IPFSQuery>('logo', () => $fetch(`https://craft-network.mypinata.cloud/ipfs/${logoHash}?pinataGatewayToken=oJhjrR8LQ2NWHUgZMg8wuUiy5dJs-SrfsQWlh4XYjNXB0y2INeaZfyjsf29OHaDR`)),
+  useAsyncData<IPFSQuery>('unrevealed', () => $fetch(`https://craft-network.mypinata.cloud/ipfs/${unrevealedHash}?pinataGatewayToken=oJhjrR8LQ2NWHUgZMg8wuUiy5dJs-SrfsQWlh4XYjNXB0y2INeaZfyjsf29OHaDR`)),
 ])
 
 useHead({
